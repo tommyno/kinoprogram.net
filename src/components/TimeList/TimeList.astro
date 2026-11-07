@@ -1,5 +1,6 @@
 ---
 import { showingPath, type Film, type Showing } from '@lib/program.ts';
+import Poster from '@components/Poster/Poster.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
 import styles from './TimeList.module.css';
 
@@ -22,6 +23,9 @@ const { films, showings } = Astro.props;
           {list.map((s) => (
             <ShowingLink showing={s} text={[s.time, films[s.filmId].title, s.cinema]} href={showingPath(films[s.filmId], s)} class={styles.row}>
               <span class={styles.time}>{s.time}</span>{' '}
+              <span class={styles.poster}>
+                <Poster film={films[s.filmId]} />
+              </span>
               <span class={styles.text}>
                 <span class={styles.title}>{films[s.filmId].title}</span>{' '}
                 <span class={styles.where}>{s.cinema}</span>

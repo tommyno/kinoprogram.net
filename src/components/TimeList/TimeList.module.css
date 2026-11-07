@@ -53,8 +53,23 @@
   text-decoration: none;
 }
 
+[data-posters] .row {
+  grid-template-columns: 48px 48px minmax(0, 1fr);
+  padding-block: 6px;
+}
+
 .row:hover .title {
   text-decoration: underline;
+}
+
+/* Shown by the poster switch (data-posters, set by the Program script). Hidden images aren't downloaded */
+.poster {
+  display: none;
+  width: 48px;
+}
+
+[data-posters] .poster {
+  display: block;
 }
 
 .time {

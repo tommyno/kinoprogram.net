@@ -17,7 +17,17 @@ const { films, showings, later } = Astro.props;
 ---
 
 <div class={styles.program} data-program>
-  <ViewTabs />
+  <div class={styles.bar}>
+    <ViewTabs />
+    {
+      showings.length > 0 && (
+        <button type="button" role="switch" aria-checked="false" class={styles.posterSwitch} hidden data-poster-switch>
+          <span class={styles.track} aria-hidden="true" />
+          Plakater
+        </button>
+      )
+    }
+  </div>
 
   {
     showings.length === 0 ? (
@@ -49,6 +59,7 @@ const { films, showings, later } = Astro.props;
   const hours = [...root.querySelectorAll<HTMLElement>('[data-hour]')];
   const tabs = [...root.querySelectorAll<HTMLElement>('[data-sort]')];
   const indicator = root.querySelector<HTMLElement>('[data-indicator]')!;
+  const posterSwitch = root.querySelector<HTMLButtonElement>('[data-poster-switch]');
 
   const isOpen = (button: HTMLButtonElement) => button.getAttribute('aria-expanded') === 'true';
   const toggle = (button: HTMLButtonElement) => button.setAttribute('aria-expanded', String(!isOpen(button)));
@@ -69,7 +80,15 @@ const { films, showings, later } = Astro.props;
       button.tabIndex = selected ? 0 : -1;
     }
     for (const view of root.querySelectorAll<HTMLElement>('[data-view]')) view.hidden = view.dataset.view !== sort;
+    // The Film view has posters already
+    if (posterSwitch) posterSwitch.hidden = sort === 'film';
     placeIndicator();
+  }
+
+  /** Small posters in the Tidspunkt and Kino lists */
+  function showPosters(on: boolean) {
+    posterSwitch?.setAttribute('aria-checked', String(on));
+    root.toggleAttribute('data-posters', on);
   }
 
   function updateCard(card: HTMLElement) {
@@ -131,6 +150,19 @@ const { films, showings, later } = Astro.props;
       updateCard(card);
     });
   }
+
+  // Kept in the browser, so the choice holds on other days
+  posterSwitch?.addEventListener('click', () => {
+    const on = posterSwitch.getAttribute('aria-checked') !== 'true';
+    showPosters(on);
+    try {
+      localStorage.setItem('plakater', on ? 'på' : 'av');
+    } catch {}
+  });
+
+  try {
+    showPosters(localStorage.getItem('plakater') === 'på');
+  } catch {}
 
   pastToggle?.addEventListener('click', () => {
     toggle(pastToggle);

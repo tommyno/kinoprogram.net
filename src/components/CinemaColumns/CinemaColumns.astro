@@ -2,6 +2,7 @@
 import { cinemaPath } from '@lib/cinemas.ts';
 import { collator, showingPath, type Film, type Showing } from '@lib/program.ts';
 import { formatShortDay } from '@lib/time.ts';
+import Poster from '@components/Poster/Poster.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
 import styles from './CinemaColumns.module.css';
 
@@ -31,6 +32,9 @@ const cinemas = [...Map.groupBy(showings, (s) => s.cinema)].sort(([a], [b]) => c
         {list.map((s) => (
           <ShowingLink showing={s} text={[s.time, films[s.filmId].title, s.screen]} context={s.cinema} href={showingPath(films[s.filmId], s)} class={styles.row}>
             <span class={styles.time}>{s.time}</span>{' '}
+            <span class={styles.poster}>
+              <Poster film={films[s.filmId]} />
+            </span>
             <span class={styles.title}>{films[s.filmId].title}</span>{' '}
             <span class={styles.screen}>{s.screen}</span>
           </ShowingLink>
