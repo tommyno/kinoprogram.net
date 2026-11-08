@@ -10,13 +10,15 @@
   flex-direction: column;
 }
 
+/* On phones the space above the switch matches the space below it, which the page gap shrunk by the margin sets */
 .posterSwitch {
-  align-self: flex-end;
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  margin-bottom: -16px;
+  margin: 8px 0 -16px;
+  padding: 0;
   font-size: 14px;
   font-weight: 600;
 }
