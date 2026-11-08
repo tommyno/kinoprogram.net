@@ -1,0 +1,7 @@
+.zoom {
+  cursor: zoom-in;
+}
+
+.zoom[data-expanded] {
+  cursor: zoom-out;
+}

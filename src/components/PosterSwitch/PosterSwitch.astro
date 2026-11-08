@@ -4,22 +4,13 @@
 import styles from './PosterSwitch.module.css';
 
 type Props = {
-  /** Where the parent places it. */
   class?: string;
-  hidden?: boolean;
 };
 
-const { class: className, hidden } = Astro.props;
+const { class: className } = Astro.props;
 ---
 
-<button
-  type="button"
-  role="switch"
-  aria-checked="false"
-  class:list={[styles.switch, className]}
-  hidden={hidden}
-  data-poster-switch
->
+<button type="button" role="switch" aria-checked="false" class:list={[styles.switch, className]} data-poster-switch>
   <span class={styles.track} aria-hidden="true"></span>
   Vis plakater
 </button>

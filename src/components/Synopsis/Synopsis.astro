@@ -1,0 +1,65 @@
+---
+// The film page's synopsis, cut off so the text beside the poster is no taller than it ([data-heading] around it,
+// [data-poster] beside it), or at four lines on phones, where it runs under the poster. A click opens and closes it
+import styles from './Synopsis.module.css';
+
+type Props = {
+  text: string;
+};
+
+const { text } = Astro.props;
+---
+
+<p class={styles.synopsis} data-synopsis set:text={text} />
+
+<script>
+  const synopsis = document.querySelector<HTMLElement>('[data-synopsis]');
+
+  if (synopsis) {
+    const poster = document.querySelector<HTMLElement>('[data-poster]')!;
+    const heading = synopsis.closest<HTMLElement>('[data-heading]')!;
+    const wide = matchMedia('(min-width: 700px)');
+    let expanded = false;
+
+    const fit = () => {
+      synopsis.style.maxHeight = '';
+      const lineHeight = parseFloat(getComputedStyle(synopsis).lineHeight);
+      const overflow = wide.matches
+        ? heading.offsetHeight - poster.offsetHeight
+        : synopsis.offsetHeight - 4 * lineHeight;
+      const clamped = !expanded && overflow > 0;
+      synopsis.toggleAttribute('data-clamped', clamped);
+      if (clamped) {
+        // At least two lines, so there is something to fade
+        synopsis.style.maxHeight = `${Math.max(synopsis.offsetHeight - overflow, 2 * lineHeight)}px`;
+      }
+      // A button, for the keyboard too, only while it is too long
+      if (overflow > 0) {
+        synopsis.tabIndex = 0;
+        synopsis.setAttribute('role', 'button');
+        synopsis.setAttribute('aria-expanded', String(expanded));
+      } else {
+        synopsis.removeAttribute('tabindex');
+        synopsis.removeAttribute('role');
+        synopsis.removeAttribute('aria-expanded');
+      }
+    };
+
+    const toggle = () => {
+      if (!synopsis.hasAttribute('role')) return;
+      expanded = !expanded;
+      fit();
+    };
+
+    synopsis.addEventListener('click', toggle);
+    synopsis.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      toggle();
+    });
+
+    // Line breaks change with the viewport and once the font loads
+    new ResizeObserver(fit).observe(heading.parentElement!);
+    document.fonts.ready.then(fit);
+  }
+</script>

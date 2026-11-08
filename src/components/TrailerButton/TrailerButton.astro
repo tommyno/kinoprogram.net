@@ -1,0 +1,68 @@
+---
+// Opens the trailer in the element it controls (an empty band with a [data-player] inside) and closes it again. Nothing
+// loads from YouTube until the visitor asks; closing removes the player, which stops it
+import styles from './TrailerButton.module.css';
+
+type Props = {
+  /** The trailer's YouTube id. */
+  youtubeId: string;
+  /** The band's id. */
+  controls: string;
+};
+
+const { youtubeId, controls } = Astro.props;
+---
+
+<button
+  type="button"
+  class={styles.button}
+  aria-expanded="false"
+  aria-controls={controls}
+  data-trailer-button={youtubeId}
+>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class={styles.play}>
+    <path d="M7 4.5v15l12-7.5z"></path>
+  </svg>
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    aria-hidden="true"
+    class={styles.close}
+  >
+    <path d="M6 6l12 12M18 6L6 18"></path>
+  </svg>
+  <span data-label>Se trailer</span>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-trailer-button]');
+
+  if (button) {
+    const band = document.getElementById(button.getAttribute('aria-controls')!)!;
+    const player = band.querySelector('[data-player]')!;
+
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(open));
+      button.querySelector('[data-label]')!.textContent = open ? 'Lukk trailer' : 'Se trailer';
+      player.replaceChildren();
+      band.hidden = !open;
+      if (!open) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${button.dataset.trailerButton}?autoplay=1`;
+      iframe.title = `Trailer: ${document.querySelector('h1')!.textContent}`;
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      // YouTube refuses to play embeds that don't say which site they are on (error 153)
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      player.append(iframe);
+      // On phones the band can open below the fold
+      band.scrollIntoView({ block: 'nearest' });
+    });
+  }
+</script>

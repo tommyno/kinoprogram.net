@@ -1,0 +1,18 @@
+/* Source line breaks are kept */
+.synopsis {
+  max-width: 65ch;
+  font-size: 15px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* Too long, so a click opens and closes it */
+.synopsis[role='button'] {
+  cursor: pointer;
+}
+
+/* Cut off by the script; fades out */
+.synopsis[data-clamped] {
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent);
+}

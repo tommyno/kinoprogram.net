@@ -29,6 +29,11 @@
   }
 }
 
+/* The Film view has posters already */
+.program:has([id='view-film']:not([hidden])) .posterSwitch {
+  display: none;
+}
+
 .empty {
   padding: 48px 16px;
   border: 1px dashed var(--line-strong);

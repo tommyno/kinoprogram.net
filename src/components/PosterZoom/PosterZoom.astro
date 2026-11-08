@@ -1,0 +1,46 @@
+---
+// The film page's poster. When there is a larger copy, a click opens it (data-expanded) and closes it again; the parent
+// lays out both states
+import type { Film } from '@lib/program.ts';
+import Poster from '@components/Poster/Poster.astro';
+import styles from './PosterZoom.module.css';
+
+type Props = {
+  film: Film;
+  class: string;
+};
+
+const { film, class: className } = Astro.props;
+---
+
+{film.posterLarge ? (
+  <button
+    type="button"
+    class:list={[styles.zoom, className]}
+    style={`--poster-width: ${film.posterLarge.width}px`}
+    aria-expanded="false"
+    aria-label="Vis plakaten stor"
+    data-poster
+  >
+    <Poster film={film} srcset={film.posterLarge.srcSet} sizes="(min-width: 700px) 200px, 104px" eager />
+  </button>
+) : (
+  <div class={className} data-poster>
+    <Poster film={film} eager />
+  </div>
+)}
+
+<script>
+  const poster = document.querySelector<HTMLButtonElement>('button[data-poster]');
+
+  if (poster) {
+    const image = poster.querySelector('img')!;
+    const smallSizes = image.sizes;
+    poster.addEventListener('click', () => {
+      const expanded = poster.toggleAttribute('data-expanded');
+      poster.setAttribute('aria-expanded', String(expanded));
+      // The browser then picks the copy that is sharp at the new width
+      image.sizes = expanded ? `${poster.offsetWidth}px` : smallSizes;
+    });
+  }
+</script>

@@ -55,16 +55,11 @@
   border-radius: 0;
 }
 
-button.poster {
-  cursor: zoom-in;
-}
-
 /* Opened by a click: on its own row above the title, as wide as the page or the image allows */
 .poster[data-expanded] {
   grid-column: 1 / -1;
   width: 100%;
   max-width: var(--poster-width);
-  cursor: zoom-out;
 }
 
 .header:has(.poster[data-expanded]) .titleBlock {
@@ -88,25 +83,6 @@ button.poster {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-/* Source line breaks are kept */
-.synopsis {
-  max-width: 65ch;
-  font-size: 15px;
-  line-height: 1.5;
-  white-space: pre-line;
-}
-
-/* Too long, so a click opens and closes it */
-.synopsis[role='button'] {
-  cursor: pointer;
-}
-
-/* Cut off by the script; fades out */
-.synopsis[data-clamped] {
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 3em), transparent);
 }
 
 /* Director and cast, a line each */
@@ -139,35 +115,6 @@ button.poster {
   flex: 1 1 0;
   justify-content: center;
   white-space: nowrap;
-}
-
-.trailerButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid var(--bg);
-  border-radius: var(--radius);
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.trailerButton:hover {
-  border-color: var(--line);
-  background: var(--line);
-}
-
-/* A play icon, and a cross while the trailer is open */
-.close,
-.trailerButton[aria-expanded='true'] .play {
-  display: none;
-}
-
-.trailerButton[aria-expanded='true'] .close {
-  display: block;
 }
 
 /* A dark band across the whole window, right under the header, opened by the trailer button; on phones the video runs edge to edge */

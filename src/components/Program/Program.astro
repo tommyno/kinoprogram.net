@@ -20,20 +20,20 @@ const { films, showings, later } = Astro.props;
 <div class={styles.program} data-program>
   <div class={styles.bar}>
     <ViewTabs />
-    {showings.length > 0 && <PosterSwitch class={styles.posterSwitch} hidden />}
+    {showings.length > 0 && <PosterSwitch class={styles.posterSwitch} />}
   </div>
 
   {showings.length === 0 ? (
     <p class={styles.empty}>Ingen forestillinger denne dagen. Velg en annen dato.</p>
   ) : (
     <>
-      <div role="tabpanel" id="view-film" aria-labelledby="tab-film" data-view="film">
+      <div role="tabpanel" id="view-film" aria-labelledby="tab-film">
         <FilmGrid films={films} showings={showings} />
       </div>
-      <div role="tabpanel" id="view-tid" aria-labelledby="tab-tid" data-view="tid" hidden>
+      <div role="tabpanel" id="view-tid" aria-labelledby="tab-tid" hidden>
         <TimeList films={films} showings={showings} />
       </div>
-      <div role="tabpanel" id="view-kino" aria-labelledby="tab-kino" data-view="kino" hidden>
+      <div role="tabpanel" id="view-kino" aria-labelledby="tab-kino" hidden>
         <CinemaColumns films={films} showings={showings} later={later} />
       </div>
     </>
@@ -49,39 +49,16 @@ const { films, showings, later } = Astro.props;
   const cards = [...root.querySelectorAll<HTMLElement>('[data-card]')];
   const pastToggle = root.querySelector<HTMLButtonElement>('[data-past-toggle]');
   const hours = [...root.querySelectorAll<HTMLElement>('[data-hour]')];
-  const tabs = [...root.querySelectorAll<HTMLElement>('[data-sort]')];
-  const indicator = root.querySelector<HTMLElement>('[data-indicator]')!;
-  const posterSwitch = root.querySelector<HTMLButtonElement>('[data-poster-switch]');
 
   const isOpen = (button: HTMLButtonElement) => button.getAttribute('aria-expanded') === 'true';
   const toggle = (button: HTMLButtonElement) => button.setAttribute('aria-expanded', String(!isOpen(button)));
   const rowsIn = (el: HTMLElement) => [...el.querySelectorAll<HTMLElement>('[data-minutes]')];
 
-  /** Moves the bar under the selected tab */
-  function placeIndicator() {
-    const tab = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true')!;
-    indicator.style.width = `${tab.offsetWidth}px`;
-    indicator.style.transform = `translateX(${tab.offsetLeft}px)`;
-  }
-
-  /** Sort order kept in ?sorter= so a link opens the same view. */
-  function showSort(sort: string) {
-    for (const button of tabs) {
-      const selected = button.dataset.sort === sort;
-      button.setAttribute('aria-selected', String(selected));
-      button.tabIndex = selected ? 0 : -1;
-    }
-    for (const view of root.querySelectorAll<HTMLElement>('[data-view]')) view.hidden = view.dataset.view !== sort;
-    // The Film view has posters already
-    if (posterSwitch) posterSwitch.hidden = sort === 'film';
-    placeIndicator();
-  }
-
+  /** A film's or cinema's times: collapsed, the next few, or the last few once all have started; open, all of them. */
   function updateCard(card: HTMLElement) {
     const rows = rowsIn(card);
     const button = card.querySelector<HTMLButtonElement>('[data-more]')!;
     const upcoming = rows.filter((row) => !row.hasAttribute('data-past'));
-    // Collapsed: the next few; once all have started, the last few. Expanded: all, in time order
     const shown = upcoming.length ? upcoming.slice(0, COLLAPSED_COUNT) : rows.slice(-COLLAPSED_COUNT);
     const more = rows.length - shown.length;
     for (const row of rows) row.hidden = !isOpen(button) && !shown.includes(row);
@@ -89,6 +66,7 @@ const { films, showings, later } = Astro.props;
     button.textContent = isOpen(button) ? 'Vis færre' : moreLabel(more);
   }
 
+  /** The Tidspunkt view hides the times that have started, and hours left empty, until the visitor asks for them. */
   function updateTimeList() {
     if (!pastToggle) return;
     const rows = hours.flatMap(rowsIn);
@@ -105,30 +83,6 @@ const { films, showings, later } = Astro.props;
     updateTimeList();
   }
 
-  function selectSort(sort: string) {
-    // Only slide when the user switches, not when the bar is first placed
-    indicator.toggleAttribute('data-slide', true);
-    // Switching views fades the items in again, also on a page the visitor came back to
-    document.documentElement.removeAttribute('data-returned');
-    showSort(sort);
-    const url = new URL(location.href);
-    if (sort === 'film') url.searchParams.delete('sorter');
-    else url.searchParams.set('sorter', sort);
-    history.replaceState(null, '', url);
-  }
-
-  for (const [index, tab] of tabs.entries()) {
-    tab.addEventListener('click', () => selectSort(tab.dataset.sort!));
-    // Arrow keys move between tabs, as in any tablist
-    tab.addEventListener('keydown', (event) => {
-      const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
-      if (!step) return;
-      const next = tabs[(index + step + tabs.length) % tabs.length];
-      next.focus();
-      selectSort(next.dataset.sort!);
-    });
-  }
-
   for (const card of cards) {
     const button = card.querySelector<HTMLButtonElement>('[data-more]')!;
     button.addEventListener('click', () => {
@@ -141,13 +95,6 @@ const { films, showings, later } = Astro.props;
     toggle(pastToggle);
     updateTimeList();
   });
-
-  const fromUrl = new URLSearchParams(location.search).get('sorter');
-  if (tabs.some((tab) => tab.dataset.sort === fromUrl)) showSort(fromUrl!);
-
-  // Tab widths change with the viewport and once the font loads
-  const resizeObserver = new ResizeObserver(placeIndicator);
-  tabs.forEach((tab) => resizeObserver.observe(tab));
 
   // Started showings grey out as the clock passes them
   update();

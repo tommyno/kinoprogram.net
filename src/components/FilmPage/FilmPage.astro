@@ -4,8 +4,10 @@ import BackLink from '@components/BackLink/BackLink.astro';
 import DayLabel from '@components/DayLabel/DayLabel.astro';
 import ExternalLink from '@components/ExternalLink/ExternalLink.astro';
 import Footer from '@components/Footer/Footer.astro';
-import Poster from '@components/Poster/Poster.astro';
+import PosterZoom from '@components/PosterZoom/PosterZoom.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
+import Synopsis from '@components/Synopsis/Synopsis.astro';
+import TrailerButton from '@components/TrailerButton/TrailerButton.astro';
 import { filmMeta, listParts } from '@lib/display.ts';
 import { showingAnchor, showingDays, type Person } from '@lib/program.ts';
 import { getProgram } from '@lib/source.ts';
@@ -39,33 +41,14 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
     <BackLink />
 
     <header class={styles.header}>
-      {film.posterLarge ? (
-        <button
-          type="button"
-          class={styles.poster}
-          style={`--poster-width: ${film.posterLarge.width}px`}
-          aria-expanded="false"
-          aria-label="Vis plakaten stor"
-          data-poster
-        >
-          <Poster film={film} srcset={film.posterLarge.srcSet} sizes="(min-width: 700px) 200px, 104px" eager />
-        </button>
-      ) : (
-        <div class={styles.poster} data-poster>
-          <Poster film={film} eager />
-        </div>
-      )}
+      <PosterZoom film={film} class={styles.poster} />
       <div class={styles.heading} data-heading>
         <div class={styles.titleBlock}>
           <h1 class={styles.title}>{film.title}</h1>
           {meta && <p class={styles.meta}>{meta}</p>}
         </div>
         <div class={styles.body}>
-          {film.synopsis && (
-            <p class={styles.synopsis} data-synopsis>
-              {film.synopsis}
-            </p>
-          )}
+          {film.synopsis && <Synopsis text={film.synopsis} />}
           {credits.length > 0 && (
             <p class={styles.credits}>
               {credits.map(([label, people]) => (
@@ -85,40 +68,7 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
             </p>
           )}
           <div class={styles.actions}>
-            {film.trailer && (
-              <button
-                type="button"
-                class={styles.trailerButton}
-                aria-expanded="false"
-                aria-controls="trailer"
-                data-trailer-button={film.trailer}
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  class={styles.play}
-                >
-                  <path d="M7 4.5v15l12-7.5z"></path>
-                </svg>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  aria-hidden="true"
-                  class={styles.close}
-                >
-                  <path d="M6 6l12 12M18 6L6 18"></path>
-                </svg>
-                <span data-label>Se trailer</span>
-              </button>
-            )}
+            {film.trailer && <TrailerButton youtubeId={film.trailer} controls="trailer" />}
             <ExternalLink href={film.pageUrl}>{film.source}</ExternalLink>
           </div>
         </div>
@@ -170,98 +120,5 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
     chosen.toggleAttribute('data-chosen', true);
     // Instant, as the page should open there rather than glide there (html scrolls smoothly)
     chosen.scrollIntoView({ block: 'nearest', behavior: 'instant' });
-  }
-
-  // A click opens the poster to the page width, or its own width if that is smaller, and closes it again
-  const poster = document.querySelector<HTMLElement>('button[data-poster]');
-  if (poster) {
-    const image = poster.querySelector('img')!;
-    const smallSizes = image.sizes;
-    poster.addEventListener('click', () => {
-      const expanded = poster.toggleAttribute('data-expanded');
-      poster.setAttribute('aria-expanded', String(expanded));
-      // The browser then picks the version that is sharp at the new width
-      image.sizes = expanded ? `${poster.offsetWidth}px` : smallSizes;
-    });
-  }
-
-  // Nothing loads from YouTube until the visitor asks for the trailer; closing it removes the player, which stops it
-  const trailerButton = document.querySelector<HTMLButtonElement>('[data-trailer-button]');
-  if (trailerButton) {
-    const trailer = document.getElementById('trailer')!;
-    const player = trailer.querySelector('[data-player]')!;
-    trailerButton.addEventListener('click', () => {
-      const open = trailerButton.getAttribute('aria-expanded') !== 'true';
-      trailerButton.setAttribute('aria-expanded', String(open));
-      trailerButton.querySelector('[data-label]')!.textContent = open ? 'Lukk trailer' : 'Se trailer';
-      player.replaceChildren();
-      trailer.hidden = !open;
-      if (!open) return;
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube-nocookie.com/embed/${trailerButton.dataset.trailerButton}?autoplay=1`;
-      iframe.title = `Trailer: ${document.querySelector('h1')!.textContent}`;
-      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-      iframe.allowFullscreen = true;
-      // YouTube refuses to play embeds that don't say which site they are on (error 153)
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      player.append(iframe);
-      // On phones the band can open below the fold
-      trailer.scrollIntoView({ block: 'nearest' });
-    });
-  }
-
-  const synopsis = document.querySelector<HTMLElement>('[data-synopsis]');
-
-  if (synopsis) {
-    const poster = document.querySelector<HTMLElement>('[data-poster]')!;
-    const heading = document.querySelector<HTMLElement>('[data-heading]')!;
-    const wide = matchMedia('(min-width: 700px)');
-    let expanded = false;
-
-    /**
-     * Cuts the synopsis off so the text column is no taller than the poster, or on phones, where it runs under the
-     * poster, at four lines; a click opens and closes it.
-     */
-    const fitSynopsis = () => {
-      synopsis.style.maxHeight = '';
-      const lineHeight = parseFloat(getComputedStyle(synopsis).lineHeight);
-      const overflow = wide.matches
-        ? heading.offsetHeight - poster.offsetHeight
-        : synopsis.offsetHeight - 4 * lineHeight;
-      const clamped = !expanded && overflow > 0;
-      synopsis.toggleAttribute('data-clamped', clamped);
-      if (clamped) {
-        // At least two lines, so there is something to fade
-        const minimum = 2 * lineHeight;
-        synopsis.style.maxHeight = `${Math.max(synopsis.offsetHeight - overflow, minimum)}px`;
-      }
-      // Opens and closes from the keyboard too while it is too long for the poster
-      if (overflow > 0) {
-        synopsis.tabIndex = 0;
-        synopsis.setAttribute('role', 'button');
-        synopsis.setAttribute('aria-expanded', String(expanded));
-      } else {
-        synopsis.removeAttribute('tabindex');
-        synopsis.removeAttribute('role');
-        synopsis.removeAttribute('aria-expanded');
-      }
-    };
-
-    const toggleSynopsis = () => {
-      if (!synopsis.hasAttribute('role')) return;
-      expanded = !expanded;
-      fitSynopsis();
-    };
-
-    synopsis.addEventListener('click', toggleSynopsis);
-    synopsis.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      toggleSynopsis();
-    });
-
-    // Line breaks change with the viewport and once the font loads
-    new ResizeObserver(fitSynopsis).observe(heading.parentElement!);
-    document.fonts.ready.then(fitSynopsis);
   }
 </script>
