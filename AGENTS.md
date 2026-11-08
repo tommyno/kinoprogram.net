@@ -1,22 +1,25 @@
-## Development
+# Notes for coding agents
 
-When starting the dev server, use background mode:
+Kinoprogram for Oslo is a static Astro site. Every page is built from the program the sources return at build time;
+the browser scripts only update times, labels and toggles. See README.md for the sources.
 
-```
-astro dev --background
-```
+## Commands
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+- `pnpm dev`: the dev server on port 3000 (`astro dev --background` to run it in the background)
+- `pnpm test`, `pnpm check`, `pnpm format`: tests, type check and Prettier, all run by CI
 
-## Documentation
+## Layout
 
-Full documentation: https://docs.astro.build
+- `src/lib/sources/`: one file per source, each exporting a `Source` and listed in `index.ts`, with a test against
+  the saved response in `tests/fixtures/` (`pnpm fixture` refreshes them)
+- `src/lib/`: the program model, fetching, dates and formatting
+- `src/components/`: one folder per component, with its CSS module
+- `src/pages/`: thin routes that hand over to a page component
 
-Consult these guides before working on related tasks:
+## Conventions
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+- `type`, never `interface`
+- CSS modules, never `composes`: share with a variable or a global rule in `src/styles/global.css`, or repeat it
+- Monochrome design: black, white and greys
+- The site is in Norwegian; code, comments and build messages are in English
+- Keep it simple: no edge-case logic that wasn't asked for

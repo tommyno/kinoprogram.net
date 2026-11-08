@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # Source fetch cache (local builds)
 .cache/
+
+# Local editor and agent settings
+.claude/
