@@ -12,7 +12,8 @@ the browser scripts only update times, labels and toggles. See README.md for the
 
 - `src/lib/sources/`: one file per source, each exporting a `Source` and listed in `index.ts`, with a test against
   the saved response in `tests/fixtures/` (`pnpm fixture` refreshes them)
-- `src/lib/`: the program model, fetching, dates and formatting
+- `src/lib/`: the program model (`program.ts`), fetching (`source.ts`, `http.ts`), dates (`time.ts`), labels and
+  lists for the pages (`display.ts`) and the page scripts' shared code (`browser.ts`)
 - `src/components/`: one folder per component, with its CSS module
 - `src/pages/`: thin routes that hand over to a page component
 

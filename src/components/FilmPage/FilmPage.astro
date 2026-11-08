@@ -3,7 +3,8 @@ import Base from '@layouts/Base.astro';
 import Footer from '@components/Footer/Footer.astro';
 import Poster from '@components/Poster/Poster.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
-import { filmMeta, listParts, showingAnchor, showingDays, type Person } from '@lib/program.ts';
+import { filmMeta, listParts } from '@lib/display.ts';
+import { showingAnchor, showingDays, type Person } from '@lib/program.ts';
 import { getProgram } from '@lib/source.ts';
 import { dayLabel, formatDay, programNow } from '@lib/time.ts';
 import styles from './FilmPage.module.css';
@@ -181,7 +182,7 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
 </Base>
 
 <script>
-  import { markPast, relabelDays } from '@lib/time.ts';
+  import { markPast, relabelDays } from '@lib/browser.ts';
 
   relabelDays();
 

@@ -1,5 +1,3 @@
-import { formatDuration } from './time.ts';
-
 export type Film = {
   title: string;
   /** The original title, when the source has one. */
@@ -77,15 +75,6 @@ export type Source = {
 
 export const collator = new Intl.Collator('nb');
 
-/** Times shown per film in the Film view and per cinema in the Kino view before "+ N tider til". The Program script
- * moves them to the next few as showings start. */
-export const COLLAPSED_COUNT = 3;
-
-/** "+ 1 tid til", "+ 4 tider til". */
-export function moreLabel(count: number): string {
-  return `+ ${count} ${count === 1 ? 'tid' : 'tider'} til`;
-}
-
 /** "Serpico (1973)" → "Serpico" and 1973. A name without a year is kept whole. */
 export function splitYear(name: string): { title: string; year: number | null } {
   const m = name.match(/^(.*?)\s*\((\d{4})\)$/);
@@ -125,21 +114,6 @@ export function showingDays(program: Program, from: string, keep: (s: Showing) =
     .filter(([day]) => day >= from)
     .map(([day, list]): [string, Showing[]] => [day, list.filter(keep)])
     .filter(([, list]) => list.length > 0);
-}
-
-const listFormat = new Intl.ListFormat('nb', { type: 'conjunction' });
-
-/** "Ingrid Bergman, Liv Ullmann og Lena Nyman", as the items and the commas and "og" between them, so each can be a link. */
-export function listParts<T extends { name: string }>(items: T[]): (T | string)[] {
-  let i = 0;
-  return listFormat
-    .formatToParts(items.map((item) => item.name))
-    .map((part) => (part.type === 'element' ? items[i++] : part.value));
-}
-
-/** "1 t 50 min · 12 år", or whichever of the two is known. */
-export function filmMeta(film: Film): string {
-  return [formatDuration(film.minutes), film.ageRating].filter(Boolean).join(' · ');
 }
 
 /** Ids of every film with a showing from the given day on. */

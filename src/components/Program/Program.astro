@@ -41,8 +41,8 @@ const { films, showings, later } = Astro.props;
 </div>
 
 <script>
-  import { COLLAPSED_COUNT, moreLabel } from '@lib/program.ts';
-  import { markPast } from '@lib/time.ts';
+  import { COLLAPSED_COUNT, moreLabel } from '@lib/display.ts';
+  import { markPast } from '@lib/browser.ts';
 
   const root = document.querySelector<HTMLElement>('[data-program]')!;
   const links = [...root.querySelectorAll<HTMLElement>('[data-minutes]')];
