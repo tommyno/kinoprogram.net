@@ -43,12 +43,12 @@ const { films, showings, later } = Astro.props;
 </div>
 
 <script>
+  import { COLLAPSED_COUNT } from '@lib/program.ts';
   import { markPast } from '@lib/time.ts';
 
   const root = document.querySelector<HTMLElement>('[data-program]')!;
   const links = [...root.querySelectorAll<HTMLElement>('[data-minutes]')];
   const cards = [...root.querySelectorAll<HTMLElement>('[data-card]')];
-  const collapsedCount = Number(root.querySelector<HTMLElement>('[data-collapsed-count]')?.dataset.collapsedCount);
   const pastToggle = root.querySelector<HTMLButtonElement>('[data-past-toggle]');
   const hours = [...root.querySelectorAll<HTMLElement>('[data-hour]')];
   const tabs = [...root.querySelectorAll<HTMLElement>('[data-sort]')];
@@ -84,7 +84,7 @@ const { films, showings, later } = Astro.props;
     const button = card.querySelector<HTMLButtonElement>('[data-more]')!;
     const upcoming = rows.filter((row) => !row.hasAttribute('data-past'));
     // Collapsed: the next few; once all have started, the last few. Expanded: all, in time order
-    const shown = upcoming.length ? upcoming.slice(0, collapsedCount) : rows.slice(-collapsedCount);
+    const shown = upcoming.length ? upcoming.slice(0, COLLAPSED_COUNT) : rows.slice(-COLLAPSED_COUNT);
     const more = rows.length - shown.length;
     for (const row of rows) row.hidden = !isOpen(button) && !shown.includes(row);
     button.hidden = more === 0;

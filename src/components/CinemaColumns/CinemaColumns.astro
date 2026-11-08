@@ -34,7 +34,7 @@ const cinemas = [...Map.groupBy(showings, (s) => s.cinema)].sort(([a], [b]) => c
           {list.map((s, i) => (
             <ShowingLink showing={s} text={[s.time, films[s.filmId].title, s.screen]} context={s.cinema} href={showingPath(films[s.filmId], s)} class={styles.row} hidden={i >= COLLAPSED_COUNT}>
               <span class={styles.time}>{s.time}</span>{' '}
-              <span class={styles.poster}>
+              <span data-list-poster>
                 <Poster film={films[s.filmId]} />
               </span>
               <span class={styles.title}>{films[s.filmId].title}</span>{' '}

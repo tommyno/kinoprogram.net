@@ -1,21 +1,15 @@
 import { htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { addDays, programNow, programSlot } from '../time.ts';
+import { slugify, splitYear, type Film, type Program, type Showing, type Source } from '../program.ts';
+import { addDays, monthNumber, programNow, programSlot } from '../time.ts';
 
 // Sommerro: film evenings in the hotel's film room, each sold as a prepaid package with dinner, brunch or afternoon tea
 // first. The film page lists every screening, one block each; booking is a widget on each series' page, so a showing
 // links there. The time is when the package starts, which is when to arrive.
 export const CINEMA = 'Sommerro';
 const PAGE_URL = 'https://www.sommerrohouse.com/kultur/filmopplevelser/';
-// "Serpico (1973)"
-const TITLE = /^(.*?)\s*\((\d{4})\)$/;
 // "4. November kl 18:00 - 22:00"
 const DATE = /(\d{1,2})\.\s*(\p{L}+)\s+kl\.?\s*(\d{1,2})[:.](\d{2})/u;
-// By their first three letters, in Norwegian and English
-const MONTHS: Record<string, number> = {
-  jan: 1, feb: 2, mar: 3, apr: 4, mai: 5, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, oct: 10, nov: 11, des: 12, dec: 12,
-};
 
 export type SommerroScreening = {
   title: string;
@@ -30,7 +24,7 @@ export type SommerroScreening = {
 /** "4. November kl 18:00" as a start. The page has no year, so it is the first such date from a month ago on. */
 export function parseDate(text: string, today: string): string | null {
   const m = text.match(DATE);
-  const month = m && MONTHS[m[2].slice(0, 3).toLowerCase()];
+  const month = m && monthNumber(m[2]);
   if (!m || !month) return null;
   const date = `${String(month).padStart(2, '0')}-${m[1].padStart(2, '0')}`;
   let year = Number(today.slice(0, 4));
@@ -52,11 +46,8 @@ export function parsePage(html: string, today: string): SommerroScreening[] {
     const date = block.match(/__item__date[^>]*>(.*?)<\/span>/s)?.[1];
     const begins = date && parseDate(htmlText(date), today);
     if (!url || !name || !begins) continue;
-    const title = htmlText(name);
-    const m = title.match(TITLE);
     screenings.push({
-      title: m ? m[1] : title,
-      year: m ? Number(m[2]) : null,
+      ...splitYear(htmlText(name)),
       synopsis: htmlText(block.match(/<p>(.*?)<\/p>/s)?.[1] ?? ''),
       url,
       start: begins,

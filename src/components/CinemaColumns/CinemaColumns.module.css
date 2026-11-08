@@ -75,16 +75,6 @@
   text-decoration: underline;
 }
 
-/* Shown by the poster switch (data-posters, set by the Program script). Hidden images aren't downloaded */
-.poster {
-  display: none;
-  width: 48px;
-}
-
-[data-posters] .poster {
-  display: block;
-}
-
 .time {
   font-size: 15px;
   font-weight: 800;

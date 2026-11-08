@@ -1,21 +1,15 @@
 import { decodeEntities, htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { programSlot } from '../time.ts';
+import { slugify, splitYear, type Film, type Program, type Showing, type Source } from '../program.ts';
+import { monthNumber, programSlot } from '../time.ts';
 
 // OsloMet Filmklubb: the student film club's screenings in Lille Auditorium at P32. Its RSS feed lists the upcoming
 // screenings with only a date, so each screening's own page is fetched too, for the time and the film's details.
 export const CINEMA = 'OsloMet Filmklubb';
 const SITE = 'https://oslometfilmklubb.no';
 const FEED_URL = `${SITE}/visninger/index.xml`;
-// "Dungeons & Dragons: Honor Among Thieves (2023)"
-const TITLE = /^(.*?)\s*\((\d{4})\)$/;
 // "06 November 2026\n- 16:30"
 const TIME = /<strong>Tid:<\/strong>\s*(\d{1,2})\.?\s+(\p{L}+)\s+(\d{4})\s*-\s*(\d{1,2})[:.](\d{2})/u;
-// By their first three letters, in Norwegian and English
-const MONTHS: Record<string, number> = {
-  jan: 1, feb: 2, mar: 3, apr: 4, mai: 5, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, oct: 10, nov: 11, des: 12, dec: 12,
-};
 
 export type OsloMetScreening = {
   title: string;
@@ -39,15 +33,12 @@ function row(html: string, label: string): string | null {
 export function parsePage(html: string): OsloMetScreening | null {
   const heading = html.match(/<h1 class=post-title><a href=([^\s>]+)>(.*?)<\/a>/s);
   const time = html.match(TIME);
-  const month = time && MONTHS[time[2].slice(0, 3).toLowerCase()];
+  const month = time && monthNumber(time[2]);
   if (!heading || !time || !month) return null;
-  const name = htmlText(heading[2]);
-  const m = name.match(TITLE);
   const minutes = row(html, 'Spilletid')?.match(/^(\d+)/)?.[1];
   const date = `${time[3]}-${String(month).padStart(2, '0')}-${time[1].padStart(2, '0')}`;
   return {
-    title: m ? m[1] : name,
-    year: m ? Number(m[2]) : null,
+    ...splitYear(htmlText(heading[2])),
     minutes: minutes ? Number(minutes) : null,
     ageRating: row(html, 'Aldersgrense'),
     synopsis: decodeEntities(html.match(/<meta name=description content="(.*?)">/s)?.[1] ?? '').trim(),

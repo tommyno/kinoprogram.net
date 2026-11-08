@@ -57,7 +57,7 @@ const mapUrl = cinema && `https://www.google.com/maps/search/?api=1&query=${enco
       <p class={styles.empty}>Ingen visninger nå.</p>
     ) : (
       <>
-        <PosterSwitch class={styles.posterSwitch} />
+        <PosterSwitch />
         <div class={styles.columns}>
           {days.map(([day, list], index) => {
             const label = dayLabel(day, today);
@@ -70,7 +70,7 @@ const mapUrl = cinema && `https://www.google.com/maps/search/?api=1&query=${enco
                 {list.map((s) => (
                   <ShowingLink showing={s} text={[s.time, program.films[s.filmId].title, s.screen]} context={name} href={showingPath(program.films[s.filmId], s)} class={styles.row}>
                     <span class={styles.time}>{s.time}</span>{' '}
-                    <span class={styles.poster}>
+                    <span data-list-poster>
                       <Poster film={program.films[s.filmId]} />
                     </span>
                     <span class={styles.filmTitle}>{program.films[s.filmId].title}</span>{' '}

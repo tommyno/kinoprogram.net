@@ -102,3 +102,14 @@ button {
   color: var(--past-ink);
   background: var(--past-bg);
 }
+
+/* The small posters in the list views, shown by the poster switch (data-posters, set in Base and by PosterSwitch).
+   Hidden images aren't downloaded */
+[data-list-poster] {
+  display: none;
+  width: 48px;
+}
+
+[data-posters] [data-list-poster] {
+  display: block;
+}

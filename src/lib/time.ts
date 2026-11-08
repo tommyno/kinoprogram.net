@@ -33,6 +33,16 @@ const shortFormat = new Intl.DateTimeFormat('nb-NO', {
   month: 'short',
 });
 
+// By their first three letters, in Norwegian and English
+const MONTHS: Record<string, number> = {
+  jan: 1, feb: 2, mar: 3, apr: 4, mai: 5, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, oct: 10, nov: 11, des: 12, dec: 12,
+};
+
+/** "November", "des." → 11, 12; null for a word that isn't a month. */
+export function monthNumber(name: string): number | null {
+  return MONTHS[name.slice(0, 3).toLowerCase()] ?? null;
+}
+
 function toMinutes(time: string): number {
   return Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
 }

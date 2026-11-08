@@ -12,7 +12,6 @@
 
 /* On phones the space above the switch matches the space below it, which the page gap shrunk by the margin sets */
 .posterSwitch {
-  align-self: flex-start;
   margin: 8px 0 -16px;
 }
 

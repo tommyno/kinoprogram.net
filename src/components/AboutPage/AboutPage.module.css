@@ -42,9 +42,6 @@
 }
 
 .prose {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
   font-size: 17px;
   line-height: 1.6;
   text-wrap: pretty;

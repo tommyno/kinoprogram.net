@@ -71,10 +71,6 @@
   color: var(--muted);
 }
 
-.posterSwitch {
-  align-self: flex-start;
-}
-
 /* The days in columns as the cinemas are in the program's Kino tab, but in reading order: left to right, then down */
 .columns {
   display: grid;
@@ -137,16 +133,6 @@
 
 .row:hover .filmTitle {
   text-decoration: underline;
-}
-
-/* Shown by the poster switch. Hidden images aren't downloaded */
-.poster {
-  display: none;
-  width: 48px;
-}
-
-[data-posters] .poster {
-  display: block;
 }
 
 .time {

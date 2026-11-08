@@ -79,6 +79,12 @@ export const collator = new Intl.Collator('nb');
  * moves them to the next few as showings start. */
 export const COLLAPSED_COUNT = 3;
 
+/** "Serpico (1973)" → "Serpico" and 1973. A name without a year is kept whole. */
+export function splitYear(name: string): { title: string; year: number | null } {
+  const m = name.match(/^(.*?)\s*\((\d{4})\)$/);
+  return m ? { title: m[1], year: Number(m[2]) } : { title: name, year: null };
+}
+
 /** "Kikis budservice" → "kikis-budservice", "Glemselens øy" → "glemselens-oy". */
 export function slugify(title: string): string {
   return title

@@ -1,5 +1,6 @@
 ---
-// Turns the small posters in the lists on and off (data-posters on the page root). The choice is kept in the browser
+// Turns the small posters in the lists on and off (data-posters on the page root). The choice is kept in the browser,
+// and Base sets it again before each page renders
 import styles from './PosterSwitch.module.css';
 
 type Props = {
@@ -35,7 +36,5 @@ const { class: className, hidden } = Astro.props;
     });
   }
 
-  try {
-    showPosters(localStorage.getItem('plakater') === 'på');
-  } catch {}
+  showPosters(document.documentElement.hasAttribute('data-posters'));
 </script>

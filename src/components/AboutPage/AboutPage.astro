@@ -11,26 +11,22 @@ const sources = listParts(SOURCES);
 // Side by side under "Kino" and "Filmklubb og annet"
 const cinemas = CINEMAS.filter((c) => !c.club);
 const clubs = CINEMAS.filter((c) => c.club);
+const lede = 'Programmet til alle kinoene og filmklubbene i Oslo, samlet på ett sted og sortert dag for dag.';
 ---
 
-<Base
-  title="Om nettstedet – Kinoprogram for Oslo"
-  description="Programmet til alle kinoene og filmklubbene i Oslo, samlet på ett sted og sortert dag for dag."
->
+<Base title="Om nettstedet – Kinoprogram for Oslo" description={lede}>
   <a href="/" class={styles.back}>← Kinoprogram for Oslo</a>
 
   <article class={styles.about}>
     <header class={styles.header}>
       <h1 class={styles.title}>Om Kinoprogram for Oslo</h1>
-      <p class={styles.lede}>Programmet til alle kinoene og filmklubbene i Oslo, samlet på ett sted og sortert dag for dag.</p>
+      <p class={styles.lede}>{lede}</p>
     </header>
 
-    <div class={styles.prose}>
-      <p>
-        Kinoprogram.net er et rent idealistisk prosjekt laget av filmentusiaster for andre filmentusiaster. Film er best på
-        kino, og målet er å få frem alt det som vises av filmer i Oslo.
-      </p>
-    </div>
+    <p class={styles.prose}>
+      Kinoprogram.net er et rent idealistisk prosjekt laget av filmentusiaster for andre filmentusiaster. Film er best på
+      kino, og målet er å få frem alt det som vises av filmer i Oslo.
+    </p>
 
     <div class={styles.columns}>
       {
@@ -54,9 +50,7 @@ const clubs = CINEMAS.filter((c) => c.club);
 
     <section class={styles.section}>
       <h2 class={styles.heading}>Kontakt</h2>
-      <div class={styles.prose}>
-        <p>Har du tips om flere visningssteder i Oslo? Send en e-post til <a href="mailto:hei@kinoprogram.net">hei@kinoprogram.net</a></p>
-      </div>
+      <p class={styles.prose}>Har du tips om flere visningssteder i Oslo? Send en e-post til <a href="mailto:hei@kinoprogram.net">hei@kinoprogram.net</a></p>
     </section>
 
     <section class={styles.section}>
