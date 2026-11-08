@@ -75,6 +75,10 @@ export type Source = {
 
 export const collator = new Intl.Collator('nb');
 
+/** Times shown per film in the Film view and per cinema in the Kino view before "+ N tider til". The Program script
+ * moves them to the next few as showings start. */
+export const COLLAPSED_COUNT = 3;
+
 /** "Kikis budservice" → "kikis-budservice", "Glemselens øy" → "glemselens-oy". */
 export function slugify(title: string): string {
   return title
