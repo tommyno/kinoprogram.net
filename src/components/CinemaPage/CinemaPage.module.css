@@ -71,6 +71,10 @@
   color: var(--muted);
 }
 
+.posterSwitch {
+  align-self: flex-start;
+}
+
 /* The days as the cinemas are in the program's Kino tab */
 .columns {
   column-width: 320px;
@@ -125,8 +129,23 @@
   text-decoration: none;
 }
 
+[data-posters] .row {
+  grid-template-columns: 48px 48px minmax(0, 1fr) auto;
+  padding-block: 6px;
+}
+
 .row:hover .filmTitle {
   text-decoration: underline;
+}
+
+/* Shown by the poster switch. Hidden images aren't downloaded */
+.poster {
+  display: none;
+  width: 48px;
+}
+
+[data-posters] .poster {
+  display: block;
 }
 
 .time {

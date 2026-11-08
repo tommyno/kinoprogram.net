@@ -1,0 +1,41 @@
+---
+// Turns the small posters in the lists on and off (data-posters on the page root). The choice is kept in the browser
+import styles from './PosterSwitch.module.css';
+
+type Props = {
+  /** Where the parent places it. */
+  class?: string;
+  hidden?: boolean;
+};
+
+const { class: className, hidden } = Astro.props;
+---
+
+<button type="button" role="switch" aria-checked="false" class:list={[styles.switch, className]} hidden={hidden} data-poster-switch>
+  <span class={styles.track} aria-hidden="true"></span>
+  Vis plakater
+</button>
+
+<script>
+  const switches = [...document.querySelectorAll<HTMLButtonElement>('[data-poster-switch]')];
+
+  function showPosters(on: boolean) {
+    for (const button of switches) button.setAttribute('aria-checked', String(on));
+    document.documentElement.toggleAttribute('data-posters', on);
+  }
+
+  // Kept in the browser, so the choice holds on other days and pages
+  for (const button of switches) {
+    button.addEventListener('click', () => {
+      const on = button.getAttribute('aria-checked') !== 'true';
+      showPosters(on);
+      try {
+        localStorage.setItem('plakater', on ? 'på' : 'av');
+      } catch {}
+    });
+  }
+
+  try {
+    showPosters(localStorage.getItem('plakater') === 'på');
+  } catch {}
+</script>

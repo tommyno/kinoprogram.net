@@ -2,6 +2,7 @@
 import type { Film, Showing } from '@lib/program.ts';
 import CinemaColumns from '@components/CinemaColumns/CinemaColumns.astro';
 import FilmGrid from '@components/FilmGrid/FilmGrid.astro';
+import PosterSwitch from '@components/PosterSwitch/PosterSwitch.astro';
 import TimeList from '@components/TimeList/TimeList.astro';
 import ViewTabs from '@components/ViewTabs/ViewTabs.astro';
 import styles from './Program.module.css';
@@ -19,14 +20,7 @@ const { films, showings, later } = Astro.props;
 <div class={styles.program} data-program>
   <div class={styles.bar}>
     <ViewTabs />
-    {
-      showings.length > 0 && (
-        <button type="button" role="switch" aria-checked="false" class={styles.posterSwitch} hidden data-poster-switch>
-          <span class={styles.track} aria-hidden="true" />
-          Vis plakater
-        </button>
-      )
-    }
+    {showings.length > 0 && <PosterSwitch class={styles.posterSwitch} hidden />}
   </div>
 
   {
@@ -83,12 +77,6 @@ const { films, showings, later } = Astro.props;
     // The Film view has posters already
     if (posterSwitch) posterSwitch.hidden = sort === 'film';
     placeIndicator();
-  }
-
-  /** Small posters in the Tidspunkt and Kino lists */
-  function showPosters(on: boolean) {
-    posterSwitch?.setAttribute('aria-checked', String(on));
-    root.toggleAttribute('data-posters', on);
   }
 
   function updateCard(card: HTMLElement) {
@@ -150,19 +138,6 @@ const { films, showings, later } = Astro.props;
       updateCard(card);
     });
   }
-
-  // Kept in the browser, so the choice holds on other days
-  posterSwitch?.addEventListener('click', () => {
-    const on = posterSwitch.getAttribute('aria-checked') !== 'true';
-    showPosters(on);
-    try {
-      localStorage.setItem('plakater', on ? 'på' : 'av');
-    } catch {}
-  });
-
-  try {
-    showPosters(localStorage.getItem('plakater') === 'på');
-  } catch {}
 
   pastToggle?.addEventListener('click', () => {
     toggle(pastToggle);

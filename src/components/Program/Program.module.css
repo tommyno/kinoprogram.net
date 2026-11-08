@@ -13,51 +13,7 @@
 /* On phones the space above the switch matches the space below it, which the page gap shrunk by the margin sets */
 .posterSwitch {
   align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
   margin: 8px 0 -16px;
-  padding: 0;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.track {
-  position: relative;
-  width: 32px;
-  height: 18px;
-  border: 1.5px solid var(--ink);
-  border-radius: 9px;
-}
-
-.track::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--ink);
-}
-
-.posterSwitch[aria-checked='true'] .track {
-  background: var(--ink);
-}
-
-.posterSwitch[aria-checked='true'] .track::after {
-  background: var(--bg);
-  transform: translateX(14px);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .track,
-  .track::after {
-    transition:
-      background 150ms,
-      transform 150ms;
-  }
 }
 
 @media (min-width: 640px) {

@@ -1,6 +1,8 @@
 ---
 import Base from '@layouts/Base.astro';
 import Footer from '@components/Footer/Footer.astro';
+import Poster from '@components/Poster/Poster.astro';
+import PosterSwitch from '@components/PosterSwitch/PosterSwitch.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
 import { CINEMAS } from '@lib/cinemas.ts';
 import { showingDays, showingPath } from '@lib/program.ts';
@@ -54,26 +56,32 @@ const mapUrl = cinema && `https://www.google.com/maps/search/?api=1&query=${enco
     days.length === 0 ? (
       <p class={styles.empty}>Ingen visninger nå.</p>
     ) : (
-      <div class={styles.columns}>
-        {days.map(([day, list], index) => {
-          const label = dayLabel(day, today);
-          return (
-            <section class={styles.day} data-stagger style={`--i: ${index}`} data-day-section={day}>
-              <h2 class={styles.dayHeading}>
-                <span class={styles.dayLabel} data-day-label>{label}</span>
-                <span class={styles.date} hidden={label === formatDay(day)} data-date>{formatDay(day)}</span>
-              </h2>
-              {list.map((s) => (
-                <ShowingLink showing={s} text={[s.time, program.films[s.filmId].title, s.screen]} context={name} href={showingPath(program.films[s.filmId], s)} class={styles.row}>
-                  <span class={styles.time}>{s.time}</span>{' '}
-                  <span class={styles.filmTitle}>{program.films[s.filmId].title}</span>{' '}
-                  <span class={styles.screen}>{s.screen}</span>
-                </ShowingLink>
-              ))}
-            </section>
-          );
-        })}
-      </div>
+      <>
+        <PosterSwitch class={styles.posterSwitch} />
+        <div class={styles.columns}>
+          {days.map(([day, list], index) => {
+            const label = dayLabel(day, today);
+            return (
+              <section class={styles.day} data-stagger style={`--i: ${index}`} data-day-section={day}>
+                <h2 class={styles.dayHeading}>
+                  <span class={styles.dayLabel} data-day-label>{label}</span>
+                  <span class={styles.date} hidden={label === formatDay(day)} data-date>{formatDay(day)}</span>
+                </h2>
+                {list.map((s) => (
+                  <ShowingLink showing={s} text={[s.time, program.films[s.filmId].title, s.screen]} context={name} href={showingPath(program.films[s.filmId], s)} class={styles.row}>
+                    <span class={styles.time}>{s.time}</span>{' '}
+                    <span class={styles.poster}>
+                      <Poster film={program.films[s.filmId]} />
+                    </span>
+                    <span class={styles.filmTitle}>{program.films[s.filmId].title}</span>{' '}
+                    <span class={styles.screen}>{s.screen}</span>
+                  </ShowingLink>
+                ))}
+              </section>
+            );
+          })}
+        </div>
+      </>
     )
   }
 
