@@ -75,17 +75,18 @@
   align-self: flex-start;
 }
 
-/* The days as the cinemas are in the program's Kino tab */
+/* The days in columns as the cinemas are in the program's Kino tab, but in reading order: left to right, then down */
 .columns {
-  column-width: 320px;
-  column-gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 36px 40px;
+  align-items: start;
+  margin-bottom: 36px;
 }
 
 .day {
-  break-inside: avoid;
   display: flex;
   flex-direction: column;
-  margin: 0 0 36px;
 }
 
 .dayHeading {
