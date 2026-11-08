@@ -6,7 +6,7 @@ import { programSlot } from '../time.ts';
 // Filmweb's public site backend (undocumented). One call returns every show in a city.
 const NAME = 'Filmweb';
 const ENDPOINT = 'https://movieinfoqs.filmweb.no/graphql';
-export const LOCATION = 'Oslo';
+const LOCATION = 'Oslo';
 const FILM_URL = 'https://www.filmweb.no/film/';
 
 // The shows and the films they are of, in one request
@@ -79,10 +79,10 @@ async function query<T>(query: string, variables: Record<string, unknown>, schem
   return schema.parse(body.data);
 }
 
-/** Fetches the full program for a city in one request. */
-export async function fetchSnapshot(location: string = LOCATION): Promise<FilmwebSnapshot> {
+/** Fetches Oslo's full program in one request. */
+export async function fetchSnapshot(): Promise<FilmwebSnapshot> {
   const fetchedAt = new Date().toISOString();
-  const data = await query(PROGRAM_QUERY, { location }, ProgramData);
+  const data = await query(PROGRAM_QUERY, { location: LOCATION }, ProgramData);
   return {
     fetchedAt,
     shows: data.showQuery.getShows,

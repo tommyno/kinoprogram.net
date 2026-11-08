@@ -4,8 +4,8 @@ const ATTEMPTS = 3;
 // Longest a source may ask us to wait before trying again (Retry-After); asked to wait longer, we give up
 const MAX_WAIT_MS = 60_000;
 
-export function errorMessage(error: unknown): unknown {
-  return error instanceof Error ? error.message : error;
+export function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 /**
