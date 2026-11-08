@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { CINEMA, deichman, deichmanProgram, filmTitle, shortScreen, type RawEvent } from '../src/lib/sources/deichman.ts';
+import {
+  CINEMA,
+  deichman,
+  deichmanProgram,
+  filmTitle,
+  shortScreen,
+  type RawEvent,
+} from '../src/lib/sources/deichman.ts';
 
 function event(overrides: Partial<RawEvent> & { label?: string; location?: string }): RawEvent {
   const { label = 'Filmvisning', location = 'Kinoen, Deichman Bjørvika', ...rest } = overrides;
@@ -43,8 +50,18 @@ describe('shortScreen', () => {
 describe('deichmanProgram', () => {
   it('makes one film per title, with times in Oslo time linking to the event', () => {
     const program = deichmanProgram([
-      event({ event_id: 1, name: 'Barnas kino: Miss Moxy. Lør kl. 14', start: '2026-11-07T13:00:00Z', end: '2026-11-07T14:30:00Z' }),
-      event({ event_id: 2, name: 'Barnas kino: Miss Moxy. Søn kl. 12', start: '2026-11-08T11:00:00Z', end: '2026-11-08T12:30:00Z' }),
+      event({
+        event_id: 1,
+        name: 'Barnas kino: Miss Moxy. Lør kl. 14',
+        start: '2026-11-07T13:00:00Z',
+        end: '2026-11-07T14:30:00Z',
+      }),
+      event({
+        event_id: 2,
+        name: 'Barnas kino: Miss Moxy. Søn kl. 12',
+        start: '2026-11-08T11:00:00Z',
+        end: '2026-11-08T12:30:00Z',
+      }),
     ]);
     expect(program.films).toEqual({
       'DEICHMAN:miss-moxy': {

@@ -92,10 +92,32 @@ describe('cinemateketProgram', () => {
 describe('mergePrograms', () => {
   it('combines films and days from both sources, sorted by start', () => {
     const filmweb: Program = {
-      films: { EDI1: { title: 'Annen film', originalTitle: null, year: null, slug: 'annen-film', minutes: 90, ageRating: null, synopsis: null, posterUrl: null, pageUrl: '', source: 'Filmweb' } },
+      films: {
+        EDI1: {
+          title: 'Annen film',
+          originalTitle: null,
+          year: null,
+          slug: 'annen-film',
+          minutes: 90,
+          ageRating: null,
+          synopsis: null,
+          posterUrl: null,
+          pageUrl: '',
+          source: 'Filmweb',
+        },
+      },
       days: {
         '2026-10-29': [
-          { key: 'a', filmId: 'EDI1', cinema: 'Saga', screen: 'Sal 1', day: '2026-10-29', time: '20:00', minutes: 1200, bookingUrl: '' },
+          {
+            key: 'a',
+            filmId: 'EDI1',
+            cinema: 'Saga',
+            screen: 'Sal 1',
+            day: '2026-10-29',
+            time: '20:00',
+            minutes: 1200,
+            bookingUrl: '',
+          },
         ],
       },
     };

@@ -10,4 +10,14 @@ import { sommerro } from './sommerro.ts';
 import { weirdAndWonderful } from './weirdandwonderful.ts';
 
 // Every source the program is built from. A new one goes in its own file here, exporting a Source, and in this list
-export const SOURCES: Source[] = [filmweb, cinemateket, cinemaNeuf, deichman, revier, osloFilmrullklubb, osloMetFilmklubb, sommerro, weirdAndWonderful];
+export const SOURCES: Source[] = [
+  filmweb,
+  cinemateket,
+  cinemaNeuf,
+  deichman,
+  revier,
+  osloFilmrullklubb,
+  osloMetFilmklubb,
+  sommerro,
+  weirdAndWonderful,
+];

@@ -3,7 +3,17 @@ import styles from './InstallApp.module.css';
 ---
 
 <button type="button" class={styles.button} data-install-button>
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
     <rect x="6" y="2" width="12" height="20" rx="2.5"></rect>
     <path d="M12 7v7M9 11l3 3 3-3"></path>
   </svg>
@@ -17,7 +27,9 @@ import styles from './InstallApp.module.css';
       Kinoprogram
     </span>
     <div>
-      <h2 id="install-title" class={styles.title}>Ha kinoprogrammet på hjemskjermen</h2>
+      <h2 id="install-title" class={styles.title}>
+        Ha kinoprogrammet på hjemskjermen
+      </h2>
       <p class={styles.lead}>Den åpner i fullskjerm, rett fra hjemskjermen, akkurat som en app.</p>
     </div>
   </div>
@@ -26,7 +38,17 @@ import styles from './InstallApp.module.css';
     <li>
       Trykk på Del
       <span class={styles.key}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
           <path d="M12 3v12M8 7l4-4 4 4M8 10H6v11h12V10h-2"></path>
         </svg>
       </span>
@@ -35,17 +57,41 @@ import styles from './InstallApp.module.css';
     <li>
       Velg <strong>Legg til på Hjem-skjerm</strong>
       <span class={styles.key}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M12 8v8M8 12h8"></path>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+          <path d="M12 8v8M8 12h8"></path>
         </svg>
-      </span>. Ser du den ikke, ligger den under <strong>Vis mer</strong>
+      </span>
+      . Ser du den ikke, ligger den under <strong>Vis mer</strong>
       <span class={styles.key}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
           <path d="M6 9l6 6 6-6"></path>
         </svg>
       </span>
     </li>
-    <li>Trykk <strong>Legg til</strong> øverst til høyre</li>
+    <li>
+      Trykk <strong>Legg til</strong> øverst til høyre
+    </li>
   </ol>
 
   <ol class={styles.steps} data-steps="android" hidden>
@@ -53,7 +99,9 @@ import styles from './InstallApp.module.css';
       Trykk på menyen
       <span class={styles.key}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle>
+          <circle cx="12" cy="5" r="2"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+          <circle cx="12" cy="19" r="2"></circle>
         </svg>
       </span>
       øverst til høyre i nettleseren
@@ -61,12 +109,25 @@ import styles from './InstallApp.module.css';
     <li>
       Velg <strong>Legg til på startsiden</strong> eller <strong>Installer app</strong>
       <span class={styles.key}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M12 7v7M9 11l3 3 3-3"></path>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="6" y="2" width="12" height="20" rx="2.5"></rect>
+          <path d="M12 7v7M9 11l3 3 3-3"></path>
         </svg>
       </span>
     </li>
-    <li>Bekreft med <strong>Installer</strong> eller <strong>Legg til</strong></li>
+    <li>
+      Bekreft med <strong>Installer</strong> eller <strong>Legg til</strong>
+    </li>
   </ol>
 
   <form method="dialog">
@@ -81,7 +142,9 @@ import styles from './InstallApp.module.css';
   const dialog = document.querySelector<HTMLDialogElement>('[data-install-dialog]')!;
 
   // iPadOS reports itself as a Mac, but one with a touch screen
-  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
+  const ios =
+    /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
   dialog.querySelector<HTMLElement>(`[data-steps="${ios ? 'ios' : 'android'}"]`)!.hidden = false;
 
   // Chrome on Android can show its own install dialog; where it offers that, the button opens it instead of the guide

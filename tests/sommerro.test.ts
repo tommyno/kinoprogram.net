@@ -38,7 +38,9 @@ describe('parseDate', () => {
 
 describe('parsePage', () => {
   it('reads each screening', () => {
-    expect(parsePage(page(block("Breakfast at Tiffany&#8217;s (1961) ", '4. November kl 18:00 - 22:00')), '2026-11-02')).toEqual([
+    expect(
+      parsePage(page(block('Breakfast at Tiffany&#8217;s (1961) ', '4. November kl 18:00 - 22:00')), '2026-11-02'),
+    ).toEqual([
       {
         title: 'Breakfast at Tiffany’s',
         year: 1961,

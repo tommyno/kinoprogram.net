@@ -11,40 +11,45 @@ type Props = {
 };
 
 const { films, showings } = Astro.props;
-const groups = [...Map.groupBy(showings, (s) => s.filmId)].sort(([a], [b]) => collator.compare(films[a].title, films[b].title));
+const groups = [...Map.groupBy(showings, (s) => s.filmId)].sort(([a], [b]) =>
+  collator.compare(films[a].title, films[b].title),
+);
 ---
 
 <section aria-label="Filmer" class={styles.grid}>
-  {
-    groups.map(([filmId, list], index) => {
-      const film = films[filmId];
-      const meta = filmMeta(film);
-      return (
-        <article class={styles.card} data-card data-stagger style={`--i: ${index}`}>
-          <a href={filmPath(film)} title="Se alle visninger" tabindex="-1" aria-hidden="true">
-            <Poster film={film} eager={index < 4} />
-          </a>
-          <div class={styles.heading}>
-            <h2 class={styles.title}>
-              <a href={filmPath(film)} title="Se alle visninger">
-                {film.title}
-              </a>
-            </h2>
-            {meta && <p class={styles.meta}>{meta}</p>}
-          </div>
+  {groups.map(([filmId, list], index) => {
+    const film = films[filmId];
+    const meta = filmMeta(film);
+    return (
+      <article class={styles.card} data-card data-stagger style={`--i: ${index}`}>
+        <a href={filmPath(film)} title="Se alle visninger" tabindex="-1" aria-hidden="true">
+          <Poster film={film} eager={index < 4} />
+        </a>
+        <div class={styles.heading}>
+          <h2 class={styles.title}>
+            <a href={filmPath(film)} title="Se alle visninger">
+              {film.title}
+            </a>
+          </h2>
+          {meta && <p class={styles.meta}>{meta}</p>}
+        </div>
 
-          <div class={styles.times}>
-            {list.map((s, i) => (
-              <ShowingLink showing={s} text={[s.time, s.cinema]} context={film.title} class={styles.row} hidden={i >= COLLAPSED_COUNT}>
-                <span class={styles.time}>{s.time}</span>{' '}
-                <span class={styles.where}>{s.cinema}</span>
-              </ShowingLink>
-            ))}
-          </div>
+        <div class={styles.times}>
+          {list.map((s, i) => (
+            <ShowingLink
+              showing={s}
+              text={[s.time, s.cinema]}
+              context={film.title}
+              class={styles.row}
+              hidden={i >= COLLAPSED_COUNT}
+            >
+              <span class={styles.time}>{s.time}</span> <span class={styles.where}>{s.cinema}</span>
+            </ShowingLink>
+          ))}
+        </div>
 
-          <MoreButton count={list.length - COLLAPSED_COUNT} />
-        </article>
-      );
-    })
-  }
+        <MoreButton count={list.length - COLLAPSED_COUNT} />
+      </article>
+    );
+  })}
 </section>

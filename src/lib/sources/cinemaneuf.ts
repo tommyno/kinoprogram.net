@@ -30,7 +30,8 @@ export function parseProgram(tsv: string): NeufScreening[] {
   const screenings: NeufScreening[] = [];
   for (const cells of lines) {
     const row = Object.fromEntries(header.map((name, i) => [name, cells[i]?.trim() ?? '']));
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date) || !/^\d{1,2}:\d{2}$/.test(row.screeningStartTime) || !row.title) continue;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date) || !/^\d{1,2}:\d{2}$/.test(row.screeningStartTime) || !row.title)
+      continue;
     screenings.push({
       start: `${row.date}T${row.screeningStartTime.padStart(5, '0')}:00`,
       title: row.title,

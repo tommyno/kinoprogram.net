@@ -45,7 +45,10 @@ describe('shortScreen', () => {
 
 describe('filmwebProgram', () => {
   it('drops theatre productions', () => {
-    const result = programOf([show({}), show({ movieMainVersionId: 'KUL20232394', ticketSaleUrl: 'https://example.test/2' })]);
+    const result = programOf([
+      show({}),
+      show({ movieMainVersionId: 'KUL20232394', ticketSaleUrl: 'https://example.test/2' }),
+    ]);
     expect(Object.keys(result.films)).toEqual(['EDI1']);
   });
 
@@ -123,11 +126,22 @@ describe('filmwebProgram', () => {
       synopsisIngress: null,
       synopsisBodyText: null,
     });
-    expect(programOf([show({})], [movie('Coyote vs. Acme', '')]).films.EDI1).toMatchObject({ originalTitle: 'Coyote vs. Acme', year: 2026 });
+    expect(programOf([show({})], [movie('Coyote vs. Acme', '')]).films.EDI1).toMatchObject({
+      originalTitle: 'Coyote vs. Acme',
+      year: 2026,
+    });
     // Filmweb has lost the letters of titles in other scripts
-    expect(programOf([show({})], [movie('?? (Gunche)', '2025')]).films.EDI1).toMatchObject({ originalTitle: null, year: 2025 });
+    expect(programOf([show({})], [movie('?? (Gunche)', '2025')]).films.EDI1).toMatchObject({
+      originalTitle: null,
+      year: 2025,
+    });
     expect(programOf([show({})], [movie('Tosca', '1')]).films.EDI1.year).toBe(2026);
-    expect(programOf([show({ movieTitle: 'Zodiac (2007)' })], [{ ...movie('Zodiac (2007)', ''), premiere: '0001-01-01T00:00:00' }]).films.EDI1.year).toBe(2007);
+    expect(
+      programOf(
+        [show({ movieTitle: 'Zodiac (2007)' })],
+        [{ ...movie('Zodiac (2007)', ''), premiere: '0001-01-01T00:00:00' }],
+      ).films.EDI1.year,
+    ).toBe(2007);
   });
 
   it('falls back to the body text when a film has no ingress', () => {
@@ -168,8 +182,16 @@ describe('mergePrograms', () => {
     const result = mergePrograms([
       programOf([
         show({ movieTitle: 'Jak zyc, zeby nie zwariowac' }),
-        show({ movieMainVersionId: 'EDI2', movieTitle: 'JAK ZYC ZEBY NIE ZWARIOWAC', ticketSaleUrl: 'https://example.test/2' }),
-        show({ movieMainVersionId: 'EDI3', movieTitle: 'Jak zyc zeby nie zwariowac', ticketSaleUrl: 'https://example.test/3' }),
+        show({
+          movieMainVersionId: 'EDI2',
+          movieTitle: 'JAK ZYC ZEBY NIE ZWARIOWAC',
+          ticketSaleUrl: 'https://example.test/2',
+        }),
+        show({
+          movieMainVersionId: 'EDI3',
+          movieTitle: 'Jak zyc zeby nie zwariowac',
+          ticketSaleUrl: 'https://example.test/3',
+        }),
       ]),
     ]);
     expect(Object.values(result.films).map((f) => f.slug)).toEqual([
@@ -200,7 +222,11 @@ describe('showingDays', () => {
       show({ showStart: '2026-10-29T18:00:00', ticketSaleUrl: 'https://example.test/past' }),
       show({ showStart: '2026-10-30T18:00:00', ticketSaleUrl: 'https://example.test/today' }),
       show({ showStart: '2026-11-02T20:00:00', ticketSaleUrl: 'https://example.test/later' }),
-      show({ movieMainVersionId: 'EDI2', showStart: '2026-10-31T18:00:00', ticketSaleUrl: 'https://example.test/other' }),
+      show({
+        movieMainVersionId: 'EDI2',
+        showStart: '2026-10-31T18:00:00',
+        ticketSaleUrl: 'https://example.test/other',
+      }),
     ]),
   ]);
 
@@ -214,10 +240,30 @@ describe('showingDays', () => {
 describe('upcomingFilms', () => {
   const result = mergePrograms([
     programOf([
-      show({ movieMainVersionId: 'EDI1', movieTitle: 'Øyeblikk', showStart: '2026-11-20T18:00:00', ticketSaleUrl: 'https://example.test/1' }),
-      show({ movieMainVersionId: 'EDI2', movieTitle: 'Amélie', showStart: '2026-10-30T18:00:00', ticketSaleUrl: 'https://example.test/2' }),
-      show({ movieMainVersionId: 'EDI2', movieTitle: 'Amélie', showStart: '2026-10-31T18:00:00', ticketSaleUrl: 'https://example.test/3' }),
-      show({ movieMainVersionId: 'EDI3', movieTitle: 'Before', showStart: '2026-10-29T18:00:00', ticketSaleUrl: 'https://example.test/4' }),
+      show({
+        movieMainVersionId: 'EDI1',
+        movieTitle: 'Øyeblikk',
+        showStart: '2026-11-20T18:00:00',
+        ticketSaleUrl: 'https://example.test/1',
+      }),
+      show({
+        movieMainVersionId: 'EDI2',
+        movieTitle: 'Amélie',
+        showStart: '2026-10-30T18:00:00',
+        ticketSaleUrl: 'https://example.test/2',
+      }),
+      show({
+        movieMainVersionId: 'EDI2',
+        movieTitle: 'Amélie',
+        showStart: '2026-10-31T18:00:00',
+        ticketSaleUrl: 'https://example.test/3',
+      }),
+      show({
+        movieMainVersionId: 'EDI3',
+        movieTitle: 'Before',
+        showStart: '2026-10-29T18:00:00',
+        ticketSaleUrl: 'https://example.test/4',
+      }),
     ]),
   ]);
 

@@ -48,9 +48,7 @@ export type Credits = z.infer<typeof Credits>;
 // The film with its videos and credits appended, in one request
 const MovieData = z.object({ videos: z.object({ results: z.array(Video) }), credits: Credits });
 
-export type TmdbFilm = Partial<
-  Pick<Film, 'trailer' | 'directors' | 'cast' | 'posterUrl' | 'posterSize'>
->;
+export type TmdbFilm = Partial<Pick<Film, 'trailer' | 'directors' | 'cast' | 'posterUrl' | 'posterSize'>>;
 
 /** Earlier lookups by lookupKey, found or not, with when they were made. */
 export type TmdbCache = Record<string, { at: number; film: TmdbFilm | null }>;
@@ -79,7 +77,10 @@ export function findMatch(results: SearchResult[], titles: string[], year: numbe
 }
 
 export function tmdbPoster(path: string): Pick<Film, 'posterUrl' | 'posterSize'> {
-  return { posterUrl: `${IMAGE_URL}w${POSTER_WIDTH}${path}`, posterSize: { width: POSTER_WIDTH, height: POSTER_WIDTH * 1.5 } };
+  return {
+    posterUrl: `${IMAGE_URL}w${POSTER_WIDTH}${path}`,
+    posterSize: { width: POSTER_WIDTH, height: POSTER_WIDTH * 1.5 },
+  };
 }
 
 /** A trailer on YouTube: Norwegian before English, official before not. */
@@ -177,7 +178,9 @@ async function eachLimited<T>(items: T[], task: (item: T) => Promise<void>): Pro
       }
     }
   };
-  const failure = (await Promise.allSettled(Array.from({ length: CONCURRENCY }, worker))).find((r) => r.status === 'rejected');
+  const failure = (await Promise.allSettled(Array.from({ length: CONCURRENCY }, worker))).find(
+    (r) => r.status === 'rejected',
+  );
   if (failure) throw failure.reason;
 }
 

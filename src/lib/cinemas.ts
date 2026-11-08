@@ -76,7 +76,8 @@ export const CINEMAS: Cinema[] = [
     name: SOMMERRO,
     url: 'https://www.sommerrohouse.com/kultur/filmopplevelser/',
     address: 'Sommerrogata 1, 0255 Oslo',
-    about: 'Filmrom på hotellet Sommerro. Visningene selges som forhåndsbetalte pakker med middag, brunsj eller afternoon tea.',
+    about:
+      'Filmrom på hotellet Sommerro. Visningene selges som forhåndsbetalte pakker med middag, brunsj eller afternoon tea.',
     club: true,
   },
   { name: 'Symra', url: 'https://www.nfkino.no/kino/symra', address: 'Cecilie Thoresens vei 23, 1153 Oslo' },
@@ -112,7 +113,5 @@ export function nextCinemaDays(program: Program, day: string): { cinema: string;
     if (later <= day) continue;
     for (const s of list) if (!showing.has(s.cinema) && !next.has(s.cinema)) next.set(s.cinema, later);
   }
-  return [...next]
-    .map(([cinema, day]) => ({ cinema, day }))
-    .sort((a, b) => collator.compare(a.cinema, b.cinema));
+  return [...next].map(([cinema, day]) => ({ cinema, day })).sort((a, b) => collator.compare(a.cinema, b.cinema));
 }

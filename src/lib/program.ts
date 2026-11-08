@@ -132,7 +132,9 @@ const listFormat = new Intl.ListFormat('nb', { type: 'conjunction' });
 /** "Ingrid Bergman, Liv Ullmann og Lena Nyman", as the items and the commas and "og" between them, so each can be a link. */
 export function listParts<T extends { name: string }>(items: T[]): (T | string)[] {
   let i = 0;
-  return listFormat.formatToParts(items.map((item) => item.name)).map((part) => (part.type === 'element' ? items[i++] : part.value));
+  return listFormat
+    .formatToParts(items.map((item) => item.name))
+    .map((part) => (part.type === 'element' ? items[i++] : part.value));
 }
 
 /** "1 t 50 min · 12 år", or whichever of the two is known. */

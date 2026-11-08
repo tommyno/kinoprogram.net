@@ -13,7 +13,16 @@ import {
 } from '../src/lib/tmdb.ts';
 
 function result(overrides: Partial<SearchResult>): SearchResult {
-  return { id: 1, title: 'Film', original_title: 'Film', release_date: '2026-09-25', vote_count: 93, popularity: 1, poster_path: null, ...overrides };
+  return {
+    id: 1,
+    title: 'Film',
+    original_title: 'Film',
+    release_date: '2026-09-25',
+    vote_count: 93,
+    popularity: 1,
+    poster_path: null,
+    ...overrides,
+  };
 }
 
 function video(overrides: Partial<Video>): Video {
@@ -21,12 +30,27 @@ function video(overrides: Partial<Video>): Video {
 }
 
 function film(overrides: Partial<Film>): Film {
-  return { title: 'Film', originalTitle: null, year: 2026, slug: 'film', minutes: null, ageRating: null, synopsis: null, posterUrl: null, pageUrl: '', source: 'Filmweb', ...overrides };
+  return {
+    title: 'Film',
+    originalTitle: null,
+    year: 2026,
+    slug: 'film',
+    minutes: null,
+    ageRating: null,
+    synopsis: null,
+    posterUrl: null,
+    pageUrl: '',
+    source: 'Filmweb',
+    ...overrides,
+  };
 }
 
 describe('searchTitles', () => {
   it('searches for the original title first, without a year after it', () => {
-    expect(searchTitles({ title: 'Gudfaren (1972)', originalTitle: 'The Godfather (1972)' })).toEqual(['The Godfather', 'Gudfaren']);
+    expect(searchTitles({ title: 'Gudfaren (1972)', originalTitle: 'The Godfather (1972)' })).toEqual([
+      'The Godfather',
+      'Gudfaren',
+    ]);
     expect(searchTitles({ title: 'Butterfly', originalTitle: null })).toEqual(['Butterfly']);
   });
 });
@@ -39,11 +63,15 @@ describe('findMatch', () => {
       result({ id: 3, title: 'Butterfly', popularity: 3.5 }),
     ];
     expect(findMatch(results, ['Butterfly'], 2026)?.id).toBe(3);
-    expect(findMatch([result({ title: 'Per Ulv på saken', original_title: 'Coyote vs. Acme' })], ['coyote vs. acme'], 2026)).toBeDefined();
+    expect(
+      findMatch([result({ title: 'Per Ulv på saken', original_title: 'Coyote vs. Acme' })], ['coyote vs. acme'], 2026),
+    ).toBeDefined();
   });
 
   it('finds nothing when no title is the same', () => {
-    expect(findMatch([result({ title: 'Butterfly Effect', original_title: 'The Butterfly Effect' })], ['Butterfly'], 2026)).toBeUndefined();
+    expect(
+      findMatch([result({ title: 'Butterfly Effect', original_title: 'The Butterfly Effect' })], ['Butterfly'], 2026),
+    ).toBeUndefined();
   });
 
   it('allows a year either way, but not an older film released again', () => {
@@ -54,8 +82,12 @@ describe('findMatch', () => {
 
   it('without a year, takes the most voted result only when no other comes close', () => {
     const classic = result({ id: 1, title: 'Funny Face', release_date: '1957-02-13', vote_count: 764 });
-    expect(findMatch([result({ id: 2, title: 'Funny Face', vote_count: 15 }), classic], ['Funny Face'], null)?.id).toBe(1);
-    expect(findMatch([classic, result({ id: 2, title: 'Funny Face', vote_count: 500 })], ['Funny Face'], null)).toBeUndefined();
+    expect(findMatch([result({ id: 2, title: 'Funny Face', vote_count: 15 }), classic], ['Funny Face'], null)?.id).toBe(
+      1,
+    );
+    expect(
+      findMatch([classic, result({ id: 2, title: 'Funny Face', vote_count: 500 })], ['Funny Face'], null),
+    ).toBeUndefined();
     expect(findMatch([result({ title: 'Deep Water' })], ['Water'], null)).toBeUndefined();
     // The same film from both languages' searches
     expect(findMatch([classic, { ...classic, title: 'Funny Face' }], ['Funny Face'], null)?.id).toBe(1);
@@ -125,7 +157,11 @@ describe('fetchTmdb', () => {
     expect(fetch).not.toHaveBeenCalled();
     expect(result.lookedUp).toBe(0);
     expect(result.films).toEqual({ a: { trailer: 'abc', ...poster } });
-    expect(Object.keys(result.cache)).toEqual([lookupKey(films.a), lookupKey(films.b), lookupKey(film({ title: 'Borte' }))]);
+    expect(Object.keys(result.cache)).toEqual([
+      lookupKey(films.a),
+      lookupKey(films.b),
+      lookupKey(film({ title: 'Borte' })),
+    ]);
   });
 
   it("keeps the source's own poster", async () => {

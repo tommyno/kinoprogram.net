@@ -56,7 +56,9 @@ describe('parsePost', () => {
   });
 
   it('puts a date earlier in the year than the post in the next year', () => {
-    const screening = parsePost(post({ title: 'Persona (1966) 13. januar', pubDate: 'Sat, 12 Dec 2026 10:00:00 +0000' }));
+    const screening = parsePost(
+      post({ title: 'Persona (1966) 13. januar', pubDate: 'Sat, 12 Dec 2026 10:00:00 +0000' }),
+    );
     expect(screening?.start).toBe('2027-01-13T19:00:00');
   });
 

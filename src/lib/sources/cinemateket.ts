@@ -21,7 +21,10 @@ export type CinemateketEvent = {
 };
 
 function unescapeText(value: string): string {
-  return value.replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1').trim();
+  return value
+    .replace(/\\n/gi, '\n')
+    .replace(/\\([,;\\])/g, '$1')
+    .trim();
 }
 
 /** "20261029T170000Z" → Date. The feed only uses UTC times. */
@@ -50,7 +53,9 @@ export function parseFeed(ics: string): CinemateketEvent[] {
           minutes: fields.DTEND ? minutesBetween(start, parseDate(fields.DTEND)) : null,
           title: unescapeText(fields.SUMMARY),
           description: unescapeText(fields.DESCRIPTION ?? ''),
-          screen: unescapeText(fields.LOCATION ?? '').split(' - ')[0].trim(),
+          screen: unescapeText(fields.LOCATION ?? '')
+            .split(' - ')[0]
+            .trim(),
           url: unescapeText(fields.URL),
         });
       }

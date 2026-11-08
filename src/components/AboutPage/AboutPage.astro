@@ -15,7 +15,9 @@ const lede = 'Programmet til alle kinoene og filmklubbene i Oslo, samlet på ett
 ---
 
 <Base title="Om nettstedet – Kinoprogram for Oslo" description={lede}>
-  <a href="/" class={styles.back}>← Kinoprogram for Oslo</a>
+  <a href="/" class={styles.back}>
+    ← Kinoprogram for Oslo
+  </a>
 
   <article class={styles.about}>
     <header class={styles.header}>
@@ -24,41 +26,54 @@ const lede = 'Programmet til alle kinoene og filmklubbene i Oslo, samlet på ett
     </header>
 
     <p class={styles.prose}>
-      Kinoprogram.net er et rent idealistisk prosjekt laget av filmentusiaster for andre filmentusiaster. Film er best på
-      kino, og målet er å få frem alt det som vises av filmer i Oslo.
+      Kinoprogram.net er et rent idealistisk prosjekt laget av filmentusiaster for andre filmentusiaster. Film er best
+      på kino, og målet er å få frem alt det som vises av filmer i Oslo.
     </p>
 
     <div class={styles.columns}>
-      {
-        [
-          { heading: 'Kino', list: cinemas },
-          { heading: 'Filmklubb og annet', list: clubs },
-        ].map(({ heading, list }) => (
-          <section class={styles.section}>
-            <h2 class={styles.heading}>{heading}</h2>
-            <ul class={styles.names}>
-              {list.map(({ name }) => (
-                <li>
-                  <a href={cinemaPath(name)}>{name}</a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
-      }
+      {[
+        { heading: 'Kino', list: cinemas },
+        { heading: 'Filmklubb og annet', list: clubs },
+      ].map(({ heading, list }) => (
+        <section class={styles.section}>
+          <h2 class={styles.heading}>{heading}</h2>
+          <ul class={styles.names}>
+            {list.map(({ name }) => (
+              <li>
+                <a href={cinemaPath(name)}>{name}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </div>
 
     <section class={styles.section}>
       <h2 class={styles.heading}>Kontakt</h2>
-      <p class={styles.prose}>Har du tips om flere visningssteder i Oslo? Send en e-post til <a href="mailto:hei@kinoprogram.net">hei@kinoprogram.net</a></p>
+      <p class={styles.prose}>
+        Har du tips om flere visningssteder i Oslo? Send en e-post til{' '}
+        <a href="mailto:hei@kinoprogram.net">hei@kinoprogram.net</a>
+      </p>
     </section>
 
     <section class={styles.section}>
       <h2 class={styles.heading}>Kilder og kreditering</h2>
       <p class={styles.small}>
-        Programmet hentes fra {sources.map((part) => (typeof part === 'string' ? part : <a href={part.homepage} rel="noreferrer">{part.name}</a>))}.
+        Programmet hentes fra{' '}
+        {sources.map((part) =>
+          typeof part === 'string' ? (
+            part
+          ) : (
+            <a href={part.homepage} rel="noreferrer">
+              {part.name}
+            </a>
+          ),
+        )}
+        .
       </p>
-      <p class={styles.small}>Kinoprogram.net har ingen tilknytning til kinoene, filmklubbene eller kildene programmet hentes fra.</p>
+      <p class={styles.small}>
+        Kinoprogram.net har ingen tilknytning til kinoene, filmklubbene eller kildene programmet hentes fra.
+      </p>
       <!-- TMDB's terms ask for their logo, unchanged and smaller than ours, and this notice -->
       <p class={styles.credit}>
         <a href="https://www.themoviedb.org" class={styles.tmdb} rel="noreferrer">

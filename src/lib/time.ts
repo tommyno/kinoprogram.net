@@ -34,6 +34,7 @@ const shortFormat = new Intl.DateTimeFormat('nb-NO', {
 });
 
 // By their first three letters, in Norwegian and English
+// prettier-ignore
 const MONTHS: Record<string, number> = {
   jan: 1, feb: 2, mar: 3, apr: 4, mai: 5, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, oct: 10, nov: 11, des: 12, dec: 12,
 };

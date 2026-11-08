@@ -57,7 +57,10 @@ describe('weirdAndWonderfulProgram', () => {
   });
 
   it('leaves out cancelled and online events', () => {
-    const program = weirdAndWonderfulProgram([event({ event_status: 'cancelled' }), event({ attendance_mode: 'online' })]);
+    const program = weirdAndWonderfulProgram([
+      event({ event_status: 'cancelled' }),
+      event({ attendance_mode: 'online' }),
+    ]);
     expect(program.days).toEqual({});
   });
 });

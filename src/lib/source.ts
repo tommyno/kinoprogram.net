@@ -63,7 +63,9 @@ async function loadTmdb(films: Record<string, Film>): Promise<Record<string, Tmd
   }
   try {
     const result = await fetchTmdb(films, token, await readTmdbCache());
-    console.log(`TMDB: slo opp ${result.lookedUp} av ${Object.keys(result.cache).length} filmer, resten fra mellomlageret`);
+    console.log(
+      `TMDB: slo opp ${result.lookedUp} av ${Object.keys(result.cache).length} filmer, resten fra mellomlageret`,
+    );
     await mkdir(dirname(TMDB_CACHE), { recursive: true });
     await writeFile(TMDB_CACHE, JSON.stringify(result.cache));
     return result.films;

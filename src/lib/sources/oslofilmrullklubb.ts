@@ -10,7 +10,20 @@ const SITE = 'https://www.oslofilmrullklubb.no';
 const FEED_URL = `${SITE}/feed/`;
 // "The Executioner’s Song (1982) tirsdag 10. november"
 const TITLE = /^(.+?)\s*\((\d{4})\)\s+(?:\p{L}+dag\s+)?(\d{1,2})\.\s*(\p{L}+)$/u;
-const MONTHS = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+const MONTHS = [
+  'januar',
+  'februar',
+  'mars',
+  'april',
+  'mai',
+  'juni',
+  'juli',
+  'august',
+  'september',
+  'oktober',
+  'november',
+  'desember',
+];
 // "Filmstart litt etter 19", "Første film starter presis kl. 19"
 const START = /film\s*start\w*\D*?(\d{1,2})(?:[:.]?(\d{2}))?/i;
 

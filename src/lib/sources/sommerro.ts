@@ -37,7 +37,10 @@ export function parsePage(html: string, today: string): SommerroScreening[] {
   // The program; the carousel above it repeats the series
   const start = html.indexOf('events-listing-block--big');
   if (start < 0) throw new Error('Fant ikke programmet på Sommerro-siden');
-  const blocks = html.slice(start).split(/<div class="events-listing-block__items__item\b/).slice(1);
+  const blocks = html
+    .slice(start)
+    .split(/<div class="events-listing-block__items__item\b/)
+    .slice(1);
 
   const screenings: SommerroScreening[] = [];
   for (const block of blocks) {

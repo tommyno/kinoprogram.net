@@ -23,23 +23,21 @@ const { films, showings, later } = Astro.props;
     {showings.length > 0 && <PosterSwitch class={styles.posterSwitch} hidden />}
   </div>
 
-  {
-    showings.length === 0 ? (
-      <p class={styles.empty}>Ingen forestillinger denne dagen. Velg en annen dato.</p>
-    ) : (
-      <>
-        <div role="tabpanel" id="view-film" aria-labelledby="tab-film" data-view="film">
-          <FilmGrid films={films} showings={showings} />
-        </div>
-        <div role="tabpanel" id="view-tid" aria-labelledby="tab-tid" data-view="tid" hidden>
-          <TimeList films={films} showings={showings} />
-        </div>
-        <div role="tabpanel" id="view-kino" aria-labelledby="tab-kino" data-view="kino" hidden>
-          <CinemaColumns films={films} showings={showings} later={later} />
-        </div>
-      </>
-    )
-  }
+  {showings.length === 0 ? (
+    <p class={styles.empty}>Ingen forestillinger denne dagen. Velg en annen dato.</p>
+  ) : (
+    <>
+      <div role="tabpanel" id="view-film" aria-labelledby="tab-film" data-view="film">
+        <FilmGrid films={films} showings={showings} />
+      </div>
+      <div role="tabpanel" id="view-tid" aria-labelledby="tab-tid" data-view="tid" hidden>
+        <TimeList films={films} showings={showings} />
+      </div>
+      <div role="tabpanel" id="view-kino" aria-labelledby="tab-kino" data-view="kino" hidden>
+        <CinemaColumns films={films} showings={showings} later={later} />
+      </div>
+    </>
+  )}
 </div>
 
 <script>

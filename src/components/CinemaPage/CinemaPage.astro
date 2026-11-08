@@ -22,68 +22,87 @@ const days = showingDays(program, today, (s) => s.cinema === name);
 // "deichman.no", as the button names the cinema's site
 const host = cinema && new URL(cinema.url).hostname.replace(/^www\./, '');
 // With the name, so Google Maps finds the cinema itself rather than just the street address
-const mapUrl = cinema && `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${cinema.address}`)}`;
+const mapUrl =
+  cinema && `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${cinema.address}`)}`;
 ---
 
 <Base title={`${name} – Kinoprogram for Oslo`} description={`Alle visningene på ${name}, dag for dag.`}>
-  <a href="/" class={styles.back} data-back>← Kinoprogram for Oslo</a>
+  <a href="/" class={styles.back} data-back>
+    ← Kinoprogram for Oslo
+  </a>
 
   <header class={styles.header}>
     <div class={styles.titleBlock}>
       <h1 class={styles.title}>{name}</h1>
-      {
-        cinema && (
-          <p class={styles.address}>
-            <a href={mapUrl} target="_blank" rel="noreferrer">{cinema.address}</a>
-          </p>
-        )
-      }
+      {cinema && (
+        <p class={styles.address}>
+          <a href={mapUrl} target="_blank" rel="noreferrer">
+            {cinema.address}
+          </a>
+        </p>
+      )}
     </div>
     {cinema?.about && <p class={styles.about}>{cinema.about}</p>}
-    {
-      cinema && (
-        <a href={cinema.url} class={styles.source} target="_blank" rel="noreferrer">
-          {host}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"></path>
-          </svg>
-        </a>
-      )
-    }
+    {cinema && (
+      <a href={cinema.url} class={styles.source} target="_blank" rel="noreferrer">
+        {host}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"></path>
+        </svg>
+      </a>
+    )}
   </header>
 
-  {
-    days.length === 0 ? (
-      <p class={styles.empty}>Ingen visninger nå.</p>
-    ) : (
-      <>
-        <PosterSwitch />
-        <div class={styles.columns}>
-          {days.map(([day, list], index) => {
-            const label = dayLabel(day, today);
-            return (
-              <section class={styles.day} data-stagger style={`--i: ${index}`} data-day-section={day}>
-                <h2 class={styles.dayHeading}>
-                  <span class={styles.dayLabel} data-day-label>{label}</span>
-                  <span class={styles.date} hidden={label === formatDay(day)} data-date>{formatDay(day)}</span>
-                </h2>
-                {list.map((s) => (
-                  <ShowingLink showing={s} text={[s.time, program.films[s.filmId].title, s.screen]} context={name} href={showingPath(program.films[s.filmId], s)} class={styles.row}>
-                    <span class={styles.time}>{s.time}</span>{' '}
-                    <span data-list-poster>
-                      <Poster film={program.films[s.filmId]} thumb />
-                    </span>
-                    <span class={styles.filmTitle}>{program.films[s.filmId].title}</span>{' '}
-                    <span class={styles.screen}>{s.screen}</span>
-                  </ShowingLink>
-                ))}
-              </section>
-            );
-          })}
-        </div>
-      </>
-    )
-  }
+  {days.length === 0 ? (
+    <p class={styles.empty}>Ingen visninger nå.</p>
+  ) : (
+    <>
+      <PosterSwitch />
+      <div class={styles.columns}>
+        {days.map(([day, list], index) => {
+          const label = dayLabel(day, today);
+          return (
+            <section class={styles.day} data-stagger style={`--i: ${index}`} data-day-section={day}>
+              <h2 class={styles.dayHeading}>
+                <span class={styles.dayLabel} data-day-label>
+                  {label}
+                </span>
+                <span class={styles.date} hidden={label === formatDay(day)} data-date>
+                  {formatDay(day)}
+                </span>
+              </h2>
+              {list.map((s) => (
+                <ShowingLink
+                  showing={s}
+                  text={[s.time, program.films[s.filmId].title, s.screen]}
+                  context={name}
+                  href={showingPath(program.films[s.filmId], s)}
+                  class={styles.row}
+                >
+                  <span class={styles.time}>{s.time}</span>{' '}
+                  <span data-list-poster>
+                    <Poster film={program.films[s.filmId]} thumb />
+                  </span>
+                  <span class={styles.filmTitle}>{program.films[s.filmId].title}</span>{' '}
+                  <span class={styles.screen}>{s.screen}</span>
+                </ShowingLink>
+              ))}
+            </section>
+          );
+        })}
+      </div>
+    </>
+  )}
 
   <Footer />
 </Base>

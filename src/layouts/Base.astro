@@ -34,7 +34,8 @@ const image = new URL('/og.png', Astro.site);
     <!-- Inline in the head, so it is set before the page first renders -->
     <script is:inline>
       // Back and forward open the page as it was left, without the items fading in again (see data-stagger)
-      if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward') document.documentElement.toggleAttribute('data-returned', true);
+      if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward')
+        document.documentElement.toggleAttribute('data-returned', true);
       // The poster switch's choice (see PosterSwitch), so the rows don't shift once the page has rendered
       try {
         document.documentElement.toggleAttribute('data-posters', localStorage.getItem('plakater') === 'på');

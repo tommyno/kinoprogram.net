@@ -26,8 +26,20 @@ describe('parseProgram', () => {
 
   it('reads the rows with a date, time and title, and skips the rest', () => {
     expect(screenings).toEqual([
-      { start: '2026-11-05T19:00:00', title: 'Love is the Devil', year: 1998, minutes: 92, description: 'About Francis Bacon.' },
-      { start: '2026-11-12T09:30:00', title: 'Love is the Devil', year: 1998, minutes: 92, description: 'Om Francis Bacon.' },
+      {
+        start: '2026-11-05T19:00:00',
+        title: 'Love is the Devil',
+        year: 1998,
+        minutes: 92,
+        description: 'About Francis Bacon.',
+      },
+      {
+        start: '2026-11-12T09:30:00',
+        title: 'Love is the Devil',
+        year: 1998,
+        minutes: 92,
+        description: 'Om Francis Bacon.',
+      },
     ]);
   });
 });
