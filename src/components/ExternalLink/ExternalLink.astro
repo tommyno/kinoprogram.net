@@ -4,14 +4,12 @@ import styles from './ExternalLink.module.css';
 
 type Props = {
   href: string;
-  /** Where the parent places it, or recolours it for a dark background. */
-  class?: string;
 };
 
-const { href, class: className } = Astro.props;
+const { href } = Astro.props;
 ---
 
-<a {href} class:list={[styles.link, className]} target="_blank" rel="noreferrer">
+<a {href} class={styles.link} target="_blank" rel="noreferrer">
   <slot />
   <svg
     width="14"

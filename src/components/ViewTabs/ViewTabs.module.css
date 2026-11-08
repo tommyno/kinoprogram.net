@@ -28,7 +28,7 @@
   color: var(--ink);
 }
 
-/* The active bar, placed under the selected tab by the Program script; overlaps the tablist line. On the search page
+/* The active bar, placed under the selected tab by the script; overlaps the tablist line. On the search page
    it sits under Søk, where there is nothing to slide */
 .indicator,
 .tab[aria-current='page']::after {

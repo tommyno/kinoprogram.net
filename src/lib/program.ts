@@ -56,7 +56,6 @@ export type Showing = {
 
 export type Program = {
   films: Record<string, Film>;
-  /** Showings per day. */
   days: Record<string, Showing[]>;
 };
 
@@ -150,7 +149,6 @@ export function venueProgram(source: string, cinema: string, screenings: Screeni
   return { films, days };
 }
 
-/** The film's own page on this site. */
 export function filmPath(film: Film): string {
   return `/film/${film.slug}`;
 }

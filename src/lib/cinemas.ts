@@ -92,7 +92,6 @@ export const CINEMAS: Cinema[] = [
   },
 ];
 
-/** The cinema's own page on this site. */
 export function cinemaPath(name: string): string {
   return `/kino/${slugify(name)}`;
 }

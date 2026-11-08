@@ -99,7 +99,7 @@ button {
   }
 }
 
-/* Showings that have started (set by the Program script) */
+/* Showings that have started (set by markPast in browser.ts) */
 [data-past] {
   color: var(--past-ink);
   background: var(--past-bg);
