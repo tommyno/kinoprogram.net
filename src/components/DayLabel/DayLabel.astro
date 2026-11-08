@@ -1,0 +1,21 @@
+---
+// "I dag" or "I morgen" with the date beside it, or just the date, for a day's heading. relabelDays in browser.ts
+// labels it again when Oslo has passed midnight since the build
+import { dayLabel, formatDay } from '@lib/time.ts';
+import styles from './DayLabel.module.css';
+
+type Props = {
+  day: string;
+  today: string;
+};
+
+const { day, today } = Astro.props;
+const label = dayLabel(day, today);
+---
+
+<span class={styles.label} data-day-label>
+  {label}
+</span>
+<span class={styles.date} hidden={label === formatDay(day)} data-date>
+  {formatDay(day)}
+</span>

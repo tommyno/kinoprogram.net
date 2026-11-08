@@ -29,3 +29,12 @@ export function relabelDays(): void {
     section.querySelector<HTMLElement>('[data-date]')!.hidden = label === formatDay(day);
   }
 }
+
+/** Labels the days again and greys out started showings, now and every minute. Returns the showing links. */
+export function keepDaysCurrent(): HTMLElement[] {
+  relabelDays();
+  const links = [...document.querySelectorAll<HTMLElement>('[data-minutes]')];
+  markPast(links);
+  setInterval(() => markPast(links), 60_000);
+  return links;
+}

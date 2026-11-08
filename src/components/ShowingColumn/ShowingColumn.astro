@@ -1,0 +1,51 @@
+---
+// One column in ShowingColumns: a heading over its showings, each linking to its film's page
+import { COLLAPSED_COUNT } from '@lib/display.ts';
+import { showingPath, type Film, type Showing } from '@lib/program.ts';
+import MoreButton from '@components/MoreButton/MoreButton.astro';
+import Poster from '@components/Poster/Poster.astro';
+import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
+import styles from './ShowingColumn.module.css';
+
+type Props = {
+  films: Record<string, Film>;
+  showings: Showing[];
+  /** Its place among the columns, for the fade-in. */
+  index: number;
+  /** Shows the first few times, with "+ N tider til" for the rest, kept up to date by the Program script. */
+  collapsed?: boolean;
+  /** The day it covers, so relabelDays can label it again or drop it once it is over. */
+  day?: string;
+};
+
+const { films, showings, index, collapsed = false, day } = Astro.props;
+---
+
+<section
+  class={styles.column}
+  data-card={collapsed || undefined}
+  data-day-section={day}
+  data-stagger
+  style={`--i: ${index}`}
+>
+  <h2 class={styles.heading}>
+    <slot name="heading" />
+  </h2>
+  {showings.map((s, i) => (
+    <ShowingLink
+      showing={s}
+      text={[s.time, films[s.filmId].title, s.screen]}
+      context={s.cinema}
+      href={showingPath(films[s.filmId], s)}
+      class={styles.row}
+      hidden={collapsed && i >= COLLAPSED_COUNT}
+    >
+      <span class={styles.time}>{s.time}</span>{' '}
+      <span data-list-poster>
+        <Poster film={films[s.filmId]} thumb />
+      </span>
+      <span class={styles.title}>{films[s.filmId].title}</span> <span class={styles.screen}>{s.screen}</span>
+    </ShowingLink>
+  ))}
+  {collapsed && <MoreButton count={showings.length - COLLAPSED_COUNT} class={styles.more} />}
+</section>

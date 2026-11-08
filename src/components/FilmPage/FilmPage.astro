@@ -1,12 +1,15 @@
 ---
 import Base from '@layouts/Base.astro';
+import BackLink from '@components/BackLink/BackLink.astro';
+import DayLabel from '@components/DayLabel/DayLabel.astro';
+import ExternalLink from '@components/ExternalLink/ExternalLink.astro';
 import Footer from '@components/Footer/Footer.astro';
 import Poster from '@components/Poster/Poster.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
 import { filmMeta, listParts } from '@lib/display.ts';
 import { showingAnchor, showingDays, type Person } from '@lib/program.ts';
 import { getProgram } from '@lib/source.ts';
-import { dayLabel, formatDay, programNow } from '@lib/time.ts';
+import { programNow } from '@lib/time.ts';
 import styles from './FilmPage.module.css';
 
 type Props = {
@@ -33,9 +36,7 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
       {film.posterUrl && <img src={film.posterUrl} alt="" />}
     </div>
 
-    <a href="/" class={styles.back} data-back>
-      ← Kinoprogram for Oslo
-    </a>
+    <BackLink />
 
     <header class={styles.header}>
       {film.posterLarge ? (
@@ -118,22 +119,7 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
                 <span data-label>Se trailer</span>
               </button>
             )}
-            <a href={film.pageUrl} class={styles.source} target="_blank" rel="noreferrer">
-              {film.source}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"></path>
-              </svg>
-            </a>
+            <ExternalLink href={film.pageUrl}>{film.source}</ExternalLink>
           </div>
         </div>
       </div>
@@ -147,49 +133,36 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
   )}
 
   <div>
-    {days.map(([day, list], index) => {
-      const label = dayLabel(day, today);
-      return (
-        <section class={styles.day} data-stagger style={`--i: ${index}`} data-day-section={day}>
-          <h2 class={styles.dayHeading}>
-            <span class={styles.dayLabel} data-day-label>
-              {label}
-            </span>
-            <span class={styles.date} hidden={label === formatDay(day)} data-date>
-              {formatDay(day)}
-            </span>
-          </h2>
-          <div class={styles.times}>
-            {list.map((s) => (
-              <ShowingLink
-                showing={s}
-                text={[s.time, s.cinema, s.screen]}
-                context={film.title}
-                anchor={showingAnchor(s)}
-                class={styles.row}
-              >
-                <span class={styles.time}>{s.time}</span> <span class={styles.where}>{s.cinema}</span>{' '}
-                <span class={styles.screen}>{s.screen}</span>
-              </ShowingLink>
-            ))}
-          </div>
-        </section>
-      );
-    })}
+    {days.map(([day, list], index) => (
+      <section class={styles.day} data-stagger style={`--i: ${index}`} data-day-section={day}>
+        <h2 class={styles.dayHeading}>
+          <DayLabel day={day} today={today} />
+        </h2>
+        <div class={styles.times}>
+          {list.map((s) => (
+            <ShowingLink
+              showing={s}
+              text={[s.time, s.cinema, s.screen]}
+              context={film.title}
+              anchor={showingAnchor(s)}
+              class={styles.row}
+            >
+              <span class={styles.time}>{s.time}</span> <span class={styles.where}>{s.cinema}</span>{' '}
+              <span class={styles.screen}>{s.screen}</span>
+            </ShowingLink>
+          ))}
+        </div>
+      </section>
+    ))}
   </div>
 
   <Footer />
 </Base>
 
 <script>
-  import { markPast, relabelDays } from '@lib/browser.ts';
+  import { keepDaysCurrent } from '@lib/browser.ts';
 
-  relabelDays();
-
-  // Started showings grey out as the clock passes them, as in the program
-  const links = [...document.querySelectorAll<HTMLElement>('[data-minutes]')];
-  markPast(links);
-  setInterval(() => markPast(links), 60_000);
+  const links = keepDaysCurrent();
 
   // Coming from a time in the program (see showingPath), mark that showing and scroll only as far as needed to show it
   const chosen = links.find((link) => link.dataset.showing === location.hash.slice(1));

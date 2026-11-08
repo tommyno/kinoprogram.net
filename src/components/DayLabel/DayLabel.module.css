@@ -1,0 +1,17 @@
+/* dayLabel and formatDay give "i dag" and "søndag 1. november"; both start with a capital here */
+.label,
+.date {
+  display: inline-block;
+}
+
+.label::first-letter,
+.date::first-letter {
+  text-transform: uppercase;
+}
+
+.date {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+}

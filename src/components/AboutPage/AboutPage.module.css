@@ -1,17 +1,3 @@
-.back {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.back:hover {
-  text-decoration: underline;
-}
-
 .about {
   display: flex;
   flex-direction: column;
