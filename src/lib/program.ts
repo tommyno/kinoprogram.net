@@ -18,6 +18,8 @@ export type Film = {
   posterSize?: { width: number; height: number };
   /** The small copy and a large one, for the film page where a click opens it to full width. */
   posterLarge?: { srcSet: string; width: number };
+  /** A tiny copy for the posters beside the times in the lists. */
+  posterThumb?: string;
   /** The film's page at the source it comes from. */
   pageUrl: string;
   /** That source's name, for the link to pageUrl: "Filmweb". */
@@ -78,6 +80,11 @@ export const collator = new Intl.Collator('nb');
 /** Times shown per film in the Film view and per cinema in the Kino view before "+ N tider til". The Program script
  * moves them to the next few as showings start. */
 export const COLLAPSED_COUNT = 3;
+
+/** "+ 1 tid til", "+ 4 tider til". */
+export function moreLabel(count: number): string {
+  return `+ ${count} ${count === 1 ? 'tid' : 'tider'} til`;
+}
 
 /** "Serpico (1973)" → "Serpico" and 1973. A name without a year is kept whole. */
 export function splitYear(name: string): { title: string; year: number | null } {

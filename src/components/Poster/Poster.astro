@@ -10,14 +10,16 @@ type Props = {
   sizes?: string;
   /** Loads at once and first, for posters in view when the page opens. */
   eager?: boolean;
+  /** The tiny copy, for the posters beside the times in the lists. */
+  thumb?: boolean;
 };
 
-const { film, srcset, sizes, eager = false } = Astro.props;
+const { film, srcset, sizes, eager = false, thumb = false } = Astro.props;
 ---
 
 {
   film.posterUrl ? (
-    <img class={styles.poster} src={film.posterUrl} srcset={srcset} sizes={sizes} width="400" height="600" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} alt="" />
+    <img class={styles.poster} src={(thumb && film.posterThumb) || film.posterUrl} srcset={srcset} sizes={sizes} width="400" height="600" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} alt="" />
   ) : (
     <div class={`${styles.poster} ${styles.placeholder}`}>
       <svg viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true">

@@ -95,14 +95,6 @@
   white-space: nowrap;
 }
 
-/* The Film view's "+ N tider til" */
 .more {
-  align-self: flex-start;
   margin-top: 4px;
-  padding: 0;
-  min-height: 32px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }

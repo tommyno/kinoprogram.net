@@ -43,7 +43,7 @@ const { films, showings, later } = Astro.props;
 </div>
 
 <script>
-  import { COLLAPSED_COUNT } from '@lib/program.ts';
+  import { COLLAPSED_COUNT, moreLabel } from '@lib/program.ts';
   import { markPast } from '@lib/time.ts';
 
   const root = document.querySelector<HTMLElement>('[data-program]')!;
@@ -88,7 +88,7 @@ const { films, showings, later } = Astro.props;
     const more = rows.length - shown.length;
     for (const row of rows) row.hidden = !isOpen(button) && !shown.includes(row);
     button.hidden = more === 0;
-    button.textContent = isOpen(button) ? 'Vis færre' : `+ ${more} ${more === 1 ? 'tid' : 'tider'} til`;
+    button.textContent = isOpen(button) ? 'Vis færre' : moreLabel(more);
   }
 
   function updateTimeList() {

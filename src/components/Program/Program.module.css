@@ -3,24 +3,29 @@
   display: contents;
 }
 
-/* The tabs, with the poster switch under them on phones and at the end of the tab row on wider screens */
+/* The tabs, with the poster switch under them on phones and at the end of the tab row on wider screens. A hidden
+   switch takes no room */
 .bar {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  row-gap: 8px;
 }
 
-/* On phones the space above the switch matches the space below it, which the page gap shrunk by the margin sets */
+/* On phones the page gap below the switch is cut to the space above it */
 .posterSwitch {
-  margin: 8px 0 -16px;
+  justify-self: start;
+  margin-bottom: calc(8px - var(--page-gap));
 }
 
 @media (min-width: 640px) {
+  .bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  /* Carries on the tab row's line under it */
   .posterSwitch {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
+    margin-bottom: 0;
+    padding-left: 16px;
+    border-bottom: 1px solid var(--line-strong);
   }
 }
 

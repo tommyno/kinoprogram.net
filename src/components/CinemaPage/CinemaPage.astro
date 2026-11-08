@@ -71,7 +71,7 @@ const mapUrl = cinema && `https://www.google.com/maps/search/?api=1&query=${enco
                   <ShowingLink showing={s} text={[s.time, program.films[s.filmId].title, s.screen]} context={name} href={showingPath(program.films[s.filmId], s)} class={styles.row}>
                     <span class={styles.time}>{s.time}</span>{' '}
                     <span data-list-poster>
-                      <Poster film={program.films[s.filmId]} />
+                      <Poster film={program.films[s.filmId]} thumb />
                     </span>
                     <span class={styles.filmTitle}>{program.films[s.filmId].title}</span>{' '}
                     <span class={styles.screen}>{s.screen}</span>

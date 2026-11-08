@@ -24,7 +24,7 @@ const { films, showings } = Astro.props;
             <ShowingLink showing={s} text={[s.time, films[s.filmId].title, s.cinema]} href={showingPath(films[s.filmId], s)} class={styles.row}>
               <span class={styles.time}>{s.time}</span>{' '}
               <span data-list-poster>
-                <Poster film={films[s.filmId]} />
+                <Poster film={films[s.filmId]} thumb />
               </span>
               <span class={styles.text}>
                 <span class={styles.title}>{films[s.filmId].title}</span>{' '}
