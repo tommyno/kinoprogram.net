@@ -24,7 +24,7 @@ export async function fetchOk(
     try {
       res = await fetch(url, { ...init, headers: { ...init.headers, 'user-agent': USER_AGENT } });
       if (res.ok) return res;
-      error = new Error(`${source} svarte ${res.status} ${res.statusText}`);
+      error = new Error(`${source} responded ${res.status} ${res.statusText}`);
     } catch (networkError) {
       error = networkError;
     }
@@ -32,7 +32,7 @@ export async function fetchOk(
     const wait = Number(res?.headers.get('retry-after')) * 1000 || attempt * 5000;
     const retry = !res || res.status >= 500 || res.status === 429;
     if (!retry || attempt === ATTEMPTS || wait > MAX_WAIT_MS) throw error;
-    console.warn(`${source} feilet (forsøk ${attempt} av ${ATTEMPTS}), prøver igjen: ${errorMessage(error)}`);
+    console.warn(`${source} failed (attempt ${attempt} of ${ATTEMPTS}), retrying: ${errorMessage(error)}`);
     await new Promise((resolve) => setTimeout(resolve, wait));
   }
 }

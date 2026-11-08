@@ -30,7 +30,7 @@ function unescapeText(value: string): string {
 /** "20261029T170000Z" → Date. The feed only uses UTC times. */
 function parseDate(value: string): Date {
   const m = value.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/);
-  if (!m) throw new Error(`Ukjent datoformat i Cinemateket-feeden: ${value}`);
+  if (!m) throw new Error(`Unknown date format in the Cinemateket feed: ${value}`);
   const [, y, mo, d, h, mi, s] = m;
   return new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi, +s));
 }

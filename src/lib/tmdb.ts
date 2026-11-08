@@ -209,7 +209,7 @@ export async function fetchTmdb(
       lookedUp++;
     });
   } catch (error) {
-    console.warn(`TMDB: hopper over resten av oppslagene: ${errorMessage(error)}`);
+    console.warn(`TMDB: skipping the remaining lookups: ${errorMessage(error)}`);
   }
 
   const found: Record<string, TmdbFilm> = {};

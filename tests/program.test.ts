@@ -296,6 +296,6 @@ describe('the Filmweb fixture', () => {
 
 describe('assertPlausible', () => {
   it('rejects an empty program', () => {
-    expect(() => assertPlausible({ films: {}, days: {} }, fixtureDay)).toThrow(/ingen visninger/);
+    expect(() => assertPlausible({ films: {}, days: {} }, fixtureDay)).toThrow(/no showings/);
   });
 });

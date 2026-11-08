@@ -21,7 +21,7 @@ jobs:
           VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: |
           if [ -z "$VERCEL_DEPLOY_HOOK" ]; then
-            echo "::error::Secret VERCEL_DEPLOY_HOOK mangler"
+            echo "::error::The secret VERCEL_DEPLOY_HOOK is not set"
             exit 1
           fi
           curl --fail --silent --show-error --retry 3 -X POST "$VERCEL_DEPLOY_HOOK"

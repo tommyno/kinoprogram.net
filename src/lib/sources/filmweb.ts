@@ -74,7 +74,7 @@ async function query<T>(query: string, variables: Record<string, unknown>, schem
   });
   const body = (await res.json()) as { data?: unknown; errors?: { message: string }[] };
   if (body.errors?.length) {
-    throw new Error(`Filmweb GraphQL-feil: ${body.errors.map((e) => e.message).join('; ')}`);
+    throw new Error(`Filmweb GraphQL error: ${body.errors.map((e) => e.message).join('; ')}`);
   }
   return schema.parse(body.data);
 }

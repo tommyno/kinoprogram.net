@@ -11,7 +11,7 @@ describe('fetchOk', () => {
   it('fails at once when the source refuses, as it would refuse again', async () => {
     const fetch = vi.fn(async () => new Response('', { status: 404, statusText: 'Not Found' }));
     vi.stubGlobal('fetch', fetch);
-    await expect(fetchOk('Kilde', 'https://example.test/')).rejects.toThrow('Kilde svarte 404 Not Found');
+    await expect(fetchOk('Source', 'https://example.test/')).rejects.toThrow('Source responded 404 Not Found');
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
@@ -24,7 +24,7 @@ describe('fetchOk', () => {
       .mockResolvedValueOnce(new Response('', { status: 503 }))
       .mockResolvedValueOnce(new Response('ok'));
     vi.stubGlobal('fetch', fetch);
-    const response = fetchOk('Kilde', 'https://example.test/');
+    const response = fetchOk('Source', 'https://example.test/');
     await vi.advanceTimersByTimeAsync(1999);
     expect(fetch).toHaveBeenCalledTimes(1);
     await vi.advanceTimersByTimeAsync(1 + 10_000);
@@ -35,7 +35,7 @@ describe('fetchOk', () => {
   it('gives up when asked to wait more than a minute', async () => {
     const fetch = vi.fn(async () => new Response('', { status: 429, headers: { 'retry-after': '3600' } }));
     vi.stubGlobal('fetch', fetch);
-    await expect(fetchOk('Kilde', 'https://example.test/')).rejects.toThrow('Kilde svarte 429');
+    await expect(fetchOk('Source', 'https://example.test/')).rejects.toThrow('Source responded 429');
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 });

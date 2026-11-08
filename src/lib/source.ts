@@ -37,10 +37,10 @@ async function loadSource(source: Source): Promise<Program | null> {
     return source.program(await cachedText(source.file, source.fetch));
   } catch (error) {
     await notifySlack(
-      `${source.name} feilet${source.required ? ', så siden ble ikke bygget' : ' og er utelatt fra programmet'}: ${errorMessage(error)}`,
+      `${source.name} failed${source.required ? ', so the site was not built' : ' and is left out of the program'}: ${errorMessage(error)}`,
     );
     if (source.required) throw error;
-    console.warn(`Hopper over ${source.name}: ${errorMessage(error)}`);
+    console.warn(`Skipping ${source.name}: ${errorMessage(error)}`);
     return null;
   }
 }
@@ -58,20 +58,20 @@ async function loadTmdb(films: Record<string, Film>): Promise<Record<string, Tmd
   // Astro reads .env into import.meta.env, and Vercel's variables too; the dev server leaves process.env without it
   const token = import.meta.env.TMDB_TOKEN;
   if (!token) {
-    console.warn('Hopper over TMDB: TMDB_TOKEN mangler');
+    console.warn('Skipping TMDB: TMDB_TOKEN is not set');
     return {};
   }
   try {
     const result = await fetchTmdb(films, token, await readTmdbCache());
     console.log(
-      `TMDB: slo opp ${result.lookedUp} av ${Object.keys(result.cache).length} filmer, resten fra mellomlageret`,
+      `TMDB: looked up ${result.lookedUp} of ${Object.keys(result.cache).length} films, the rest from the cache`,
     );
     await mkdir(dirname(TMDB_CACHE), { recursive: true });
     await writeFile(TMDB_CACHE, JSON.stringify(result.cache));
     return result.films;
   } catch (error) {
-    await notifySlack(`TMDB feilet, så filmene mangler trailer: ${errorMessage(error)}`);
-    console.warn(`Hopper over TMDB: ${errorMessage(error)}`);
+    await notifySlack(`TMDB failed, so the films have no trailers: ${errorMessage(error)}`);
+    console.warn(`Skipping TMDB: ${errorMessage(error)}`);
     return {};
   }
 }

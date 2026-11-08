@@ -190,6 +190,6 @@ export function mergePrograms(programs: Program[]): Program {
 /** Throws when there is nothing to show today, so the build fails and Vercel keeps the previous deploy. */
 export function assertPlausible(program: Program, today: string): void {
   if (!program.days[today]?.length) {
-    throw new Error(`Programdataene ser feil ut: ingen visninger ${today}.`);
+    throw new Error(`The program looks wrong: no showings on ${today}.`);
   }
 }

@@ -32,9 +32,9 @@ const PageProps = z.object({
 /** The upcoming events from the organizer page's Next.js data, as JSON. */
 export function upcomingEvents(html: string): string {
   const json = html.match(/<script id="__NEXT_DATA__"[^>]*>(.*?)<\/script>/s)?.[1];
-  if (!json) throw new Error('Fant ikke arrangementene på Eventbrite-siden');
+  if (!json) throw new Error('No events found on the Eventbrite page');
   const page = PageProps.parse(JSON.parse(json).props.pageProps);
-  if (page.upcomingEventsFailed) throw new Error('Eventbrite fikk ikke hentet arrangementene');
+  if (page.upcomingEventsFailed) throw new Error('Eventbrite failed to load the events');
   return JSON.stringify(page.upcomingEvents);
 }
 

@@ -11,6 +11,6 @@ export async function notifySlack(text: string): Promise<void> {
       body: JSON.stringify({ text }),
     });
   } catch (error) {
-    console.warn(`Kunne ikke varsle Slack: ${errorMessage(error)}`);
+    console.warn(`Could not notify Slack: ${errorMessage(error)}`);
   }
 }
