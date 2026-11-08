@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { minutesBetween, osloDateTime, programSlot } from '../time.ts';
+import { venueProgram, type Program, type Source } from '../program.ts';
+import { minutesBetween, osloDateTime } from '../time.ts';
 
 // The library's ticket shop (Hoopla) lists everything Deichman Bjørvika holds. One call returns every upcoming event.
 const NAME = 'Deichman';
@@ -44,42 +44,22 @@ export function shortScreen(location: string): string {
   );
 }
 
-/** The library's film screenings as a program. Tickets are free, but must be booked on the event's page. */
+/** The library's film screenings. The events have stills, not posters, so a film gets TMDB's poster or none. */
 export function deichmanProgram(events: RawEvent[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const event of events) {
-    if (event.is_cancelled || !FILM_LABELS.includes(event.data.other_category_description ?? '')) continue;
-    const title = filmTitle(event.name);
-    const filmId = `DEICHMAN:${slugify(title)}`;
-    const eventUrl = `${SHOP}/event/${event.event_id}`;
-    films[filmId] ??= {
-      title,
-      originalTitle: null,
-      year: null,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `deichman-${slugify(title)}`,
-      minutes: event.end ? minutesBetween(new Date(event.start), new Date(event.end)) : null,
-      ageRating: null,
-      synopsis: null,
-      // The events have stills, not posters, so the film gets TMDB's poster or none
-      posterUrl: null,
-      pageUrl: eventUrl,
-      source: NAME,
-    };
-    const slot = programSlot(osloDateTime(new Date(event.start)));
-    (days[slot.day] ??= []).push({
-      key: String(event.event_id),
-      filmId,
-      cinema: CINEMA,
-      screen: shortScreen(event.data.location?.name ?? ''),
-      ...slot,
-      bookingUrl: eventUrl,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    NAME,
+    CINEMA,
+    events
+      .filter((event) => !event.is_cancelled && FILM_LABELS.includes(event.data.other_category_description ?? ''))
+      .map((event) => ({
+        key: String(event.event_id),
+        title: filmTitle(event.name),
+        minutes: event.end ? minutesBetween(new Date(event.start), new Date(event.end)) : null,
+        start: osloDateTime(new Date(event.start)),
+        screen: shortScreen(event.data.location?.name ?? ''),
+        pageUrl: `${SHOP}/event/${event.event_id}`,
+      })),
+  );
 }
 
 export const deichman: Source = {

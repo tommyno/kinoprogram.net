@@ -46,7 +46,7 @@ describe('revierProgram', () => {
   it('makes a film per title, with times linking to the event', () => {
     const program = revierProgram([event({})]);
     expect(program.films).toEqual({
-      'REVIER:catch-me-if-you-can': {
+      'revier-catch-me-if-you-can': {
         title: 'Catch Me If You Can',
         originalTitle: null,
         year: 2002,

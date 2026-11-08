@@ -1,6 +1,6 @@
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { minutesBetween, osloDateTime, programSlot } from '../time.ts';
+import { venueProgram, type Program, type Source } from '../program.ts';
+import { minutesBetween, osloDateTime } from '../time.ts';
 
 // Cinemateket isn't in Filmweb. Its calendar feed holds the next 100 screenings (about three weeks).
 const FEED_URL = 'https://www.cinemateket.no/cinemateket-webcal.ics';
@@ -70,39 +70,24 @@ export function parseFeed(ics: string): CinemateketEvent[] {
 
 /** Cinemateket's screenings as a program. Times link to the film page, where tickets are sold. */
 export function cinemateketProgram(events: CinemateketEvent[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const event of events) {
-    // Children's workshops are listed without a length; only screenings have one
-    if (!event.minutes) continue;
-    const filmId = `CINEMATEKET:${event.url.split('/').filter(Boolean).pop()}`;
-    films[filmId] ??= {
-      title: event.title,
-      // The feed has no year, so TMDB is searched by title alone
-      originalTitle: null,
-      year: null,
-      // Filmweb often lists the same film, so the prefix keeps the two pages apart
-      slug: `cinemateket-${slugify(event.title)}`,
-      minutes: event.minutes,
-      ageRating: null,
-      synopsis: event.description || null,
-      posterUrl: POSTER,
-      pageUrl: event.url,
-      source: CINEMA,
-    };
-    const slot = programSlot(event.start);
-    (days[slot.day] ??= []).push({
-      key: event.uid,
-      filmId,
-      cinema: CINEMA,
-      screen: event.screen,
-      ...slot,
-      bookingUrl: event.url,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    CINEMA,
+    CINEMA,
+    events
+      // Children's workshops are listed without a length; only screenings have one
+      .filter((event) => event.minutes)
+      .map((event) => ({
+        key: event.uid,
+        // The feed has no year, so TMDB is searched by title alone
+        title: event.title,
+        minutes: event.minutes,
+        synopsis: event.description,
+        posterUrl: POSTER,
+        start: event.start,
+        screen: event.screen,
+        pageUrl: event.url,
+      })),
+  );
 }
 
 export const cinemateket: Source = {

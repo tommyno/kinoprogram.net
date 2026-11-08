@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { programSlot } from '../time.ts';
+import { venueProgram, type Program, type Source } from '../program.ts';
 
 // Revier Film Club: free screenings at the Revier hotel, Kongens gate 5. Its program is only on Eventbrite, one event per
 // screening, and the organizer page holds the upcoming events as JSON.
@@ -45,41 +44,20 @@ export function parseName(name: string): { title: string; year: number | null; m
   return { title: m[1], year: Number(m[2]), minutes: Number(m[3] ?? 0) * 60 + Number(m[4] ?? 0) || null };
 }
 
+/** The film club's screenings, in one room. The events have no posters, so a film gets TMDB's or none. */
 export function revierProgram(events: RawEvent[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const event of events) {
-    if (event.is_cancelled || event.is_online_event) continue;
-    const { title, year, minutes } = parseName(event.name);
-    const filmId = `REVIER:${slugify(title)}`;
-    films[filmId] ??= {
-      title,
-      originalTitle: null,
-      year,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `revier-${slugify(title)}`,
-      minutes,
-      ageRating: null,
-      synopsis: null,
-      // The events have no posters, so the film gets TMDB's or none
-      posterUrl: null,
-      pageUrl: event.url,
-      source: NAME,
-    };
-    const slot = programSlot(`${event.start_date}T${event.start_time}`);
-    (days[slot.day] ??= []).push({
-      key: event.id,
-      filmId,
-      cinema: CINEMA,
-      // One room
-      screen: '',
-      ...slot,
-      bookingUrl: event.url,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    NAME,
+    CINEMA,
+    events
+      .filter((event) => !event.is_cancelled && !event.is_online_event)
+      .map((event) => ({
+        ...parseName(event.name),
+        key: event.id,
+        start: `${event.start_date}T${event.start_time}`,
+        pageUrl: event.url,
+      })),
+  );
 }
 
 export const revier: Source = {

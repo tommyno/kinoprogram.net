@@ -1,3 +1,5 @@
+import { programSlot } from './time.ts';
+
 export type Film = {
   title: string;
   /** The original title, when the source has one. */
@@ -58,6 +60,27 @@ export type Program = {
   days: Record<string, Showing[]>;
 };
 
+/** A screening as a single-venue source reads it, with what the source says about the film. */
+export type Screening = {
+  /** Stable id within the source. */
+  key: string;
+  title: string;
+  year?: number | null;
+  minutes?: number | null;
+  ageRating?: string | null;
+  synopsis?: string | null;
+  /** A poster the site can use, when the source has one. */
+  posterUrl?: string | null;
+  /** Oslo local time: "2026-11-06T16:30:00". */
+  start: string;
+  /** Left out for a venue with one room. */
+  screen?: string;
+  /** The film's or the event's page at the source. */
+  pageUrl: string;
+  /** Where to get tickets, when it isn't the page. */
+  bookingUrl?: string;
+};
+
 /** Somewhere the program is fetched from, each in its own file in src/lib/sources. */
 export type Source = {
   /** "Deichman", as the site and the build log name it. */
@@ -91,6 +114,40 @@ export function slugify(title: string): string {
     .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+/**
+ * One venue's program from its screenings: a film per title, described by its first screening. The film's id and page
+ * start with the source's name ("cinemateket-the-arbor"), so a film Filmweb also lists keeps its own page.
+ */
+export function venueProgram(source: string, cinema: string, screenings: Screening[]): Program {
+  const films: Record<string, Film> = {};
+  const days: Record<string, Showing[]> = {};
+  for (const screening of screenings) {
+    const filmId = slugify(`${source} ${screening.title}`);
+    films[filmId] ??= {
+      title: screening.title,
+      originalTitle: null,
+      year: screening.year ?? null,
+      slug: filmId,
+      minutes: screening.minutes ?? null,
+      ageRating: screening.ageRating ?? null,
+      synopsis: screening.synopsis || null,
+      posterUrl: screening.posterUrl ?? null,
+      pageUrl: screening.pageUrl,
+      source,
+    };
+    const slot = programSlot(screening.start);
+    (days[slot.day] ??= []).push({
+      key: screening.key,
+      filmId,
+      cinema,
+      screen: screening.screen ?? '',
+      ...slot,
+      bookingUrl: screening.bookingUrl ?? screening.pageUrl,
+    });
+  }
+  return { films, days };
 }
 
 /** The film's own page on this site. */

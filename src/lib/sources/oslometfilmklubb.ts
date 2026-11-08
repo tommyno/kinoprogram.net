@@ -1,7 +1,7 @@
 import { decodeEntities, htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { slugify, splitYear, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { monthNumber, programSlot } from '../time.ts';
+import { splitYear, venueProgram, type Program, type Source } from '../program.ts';
+import { monthNumber } from '../time.ts';
 
 // OsloMet Filmklubb: the student film club's screenings in Lille Auditorium at P32. Its RSS feed lists the upcoming
 // screenings with only a date, so each screening's own page is fetched too, for the time and the film's details.
@@ -47,42 +47,19 @@ export function parsePage(html: string): OsloMetScreening | null {
   };
 }
 
+/**
+ * The club's screenings in Lille Auditorium, one room, with entry at the door for members. The page's posters are
+ * TMDB's originals, so a film gets TMDB's poster from the lookup instead.
+ */
 export function osloMetProgram(pages: string[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const page of pages) {
-    const screening = parsePage(page);
-    if (!screening) continue;
-    const filmId = `OSLOMETFILMKLUBB:${slugify(screening.title)}`;
-    films[filmId] ??= {
-      title: screening.title,
-      originalTitle: null,
-      year: screening.year,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `oslomet-filmklubb-${slugify(screening.title)}`,
-      minutes: screening.minutes,
-      ageRating: screening.ageRating,
-      synopsis: screening.synopsis || null,
-      // The page's posters are TMDB's originals, so the film gets TMDB's poster from the lookup instead
-      posterUrl: null,
-      pageUrl: screening.url,
-      source: CINEMA,
-    };
-    const slot = programSlot(screening.start);
-    (days[slot.day] ??= []).push({
-      key: screening.url,
-      filmId,
-      cinema: CINEMA,
-      // One room, Lille Auditorium
-      screen: '',
-      ...slot,
-      // Entry is at the door, for members
-      bookingUrl: screening.url,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    CINEMA,
+    CINEMA,
+    pages.flatMap((page) => {
+      const screening = parsePage(page);
+      return screening ? [{ ...screening, key: screening.url, pageUrl: screening.url }] : [];
+    }),
+  );
 }
 
 /** The feed's screening pages, as a JSON list of their HTML. */

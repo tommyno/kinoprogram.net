@@ -1,7 +1,7 @@
 import { htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { slugify, splitYear, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { addDays, monthNumber, programNow, programSlot } from '../time.ts';
+import { splitYear, venueProgram, type Program, type Source } from '../program.ts';
+import { addDays, monthNumber, programNow } from '../time.ts';
 
 // Sommerro: film evenings in the hotel's film room, each sold as a prepaid package with dinner, brunch or afternoon tea
 // first. The film page lists every screening, one block each; booking is a widget on each series' page, so a showing
@@ -60,39 +60,13 @@ export function parsePage(html: string, today: string): SommerroScreening[] {
   return screenings;
 }
 
+/** The film room's screenings. Its posters are small and of unknown size, so a film gets TMDB's or none. */
 export function sommerroProgram(screenings: SommerroScreening[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const screening of screenings) {
-    const filmId = `SOMMERRO:${slugify(screening.title)}`;
-    films[filmId] ??= {
-      title: screening.title,
-      originalTitle: null,
-      year: screening.year,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `sommerro-${slugify(screening.title)}`,
-      minutes: null,
-      ageRating: null,
-      synopsis: screening.synopsis || null,
-      // The page's posters are small and of unknown size, so the film gets TMDB's or none
-      posterUrl: null,
-      pageUrl: screening.url,
-      source: CINEMA,
-    };
-    const slot = programSlot(screening.start);
-    (days[slot.day] ??= []).push({
-      key: screening.start,
-      filmId,
-      cinema: CINEMA,
-      // One room
-      screen: '',
-      ...slot,
-      bookingUrl: screening.url,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    CINEMA,
+    CINEMA,
+    screenings.map(({ url, ...screening }) => ({ ...screening, key: screening.start, pageUrl: url })),
+  );
 }
 
 export const sommerro: Source = {

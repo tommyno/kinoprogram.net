@@ -1,6 +1,6 @@
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { programNow, programSlot } from '../time.ts';
+import { venueProgram, type Program, type Source } from '../program.ts';
+import { programNow } from '../time.ts';
 
 // The student film club at Chateau Neuf. Its site reads the semester's program from a spreadsheet, one row per screening.
 export const CINEMA = 'Cinema Neuf';
@@ -44,39 +44,18 @@ export function parseProgram(tsv: string): NeufScreening[] {
   return screenings;
 }
 
+/** The spreadsheet has no posters or ticket links, and the club has one screen, Lillesalen. */
 export function cinemaNeufProgram(screenings: NeufScreening[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const screening of screenings) {
-    const filmId = `CINEMANEUF:${slugify(screening.title)}`;
-    films[filmId] ??= {
-      title: screening.title,
-      originalTitle: null,
-      year: screening.year,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `cinema-neuf-${slugify(screening.title)}`,
-      minutes: screening.minutes,
-      ageRating: null,
-      synopsis: screening.description || null,
-      // The spreadsheet has no posters, so the film gets TMDB's or none
-      posterUrl: null,
-      pageUrl: PROGRAM_URL,
-      source: CINEMA,
-    };
-    const slot = programSlot(screening.start);
-    (days[slot.day] ??= []).push({
+  return venueProgram(
+    CINEMA,
+    CINEMA,
+    screenings.map(({ description, ...screening }) => ({
+      ...screening,
       key: screening.start,
-      filmId,
-      cinema: CINEMA,
-      // One screen, Lillesalen
-      screen: '',
-      ...slot,
-      bookingUrl: PROGRAM_URL,
-    });
-  }
-
-  return { films, days };
+      synopsis: description,
+      pageUrl: PROGRAM_URL,
+    })),
+  );
 }
 
 export const cinemaNeuf: Source = {

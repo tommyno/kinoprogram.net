@@ -64,7 +64,7 @@ describe('deichmanProgram', () => {
       }),
     ]);
     expect(program.films).toEqual({
-      'DEICHMAN:miss-moxy': {
+      'deichman-miss-moxy': {
         title: 'Miss Moxy',
         originalTitle: null,
         year: null,

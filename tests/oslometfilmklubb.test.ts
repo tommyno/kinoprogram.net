@@ -37,7 +37,7 @@ describe('parsePage', () => {
 describe('osloMetProgram', () => {
   it('makes a film per title, with the time linking to its page', () => {
     const program = osloMetProgram([page('06 November 2026\n- 16:30')]);
-    expect(program.films['OSLOMETFILMKLUBB:dungeons-dragons-honor-among-thieves']).toMatchObject({
+    expect(program.films['oslomet-filmklubb-dungeons-dragons-honor-among-thieves']).toMatchObject({
       slug: 'oslomet-filmklubb-dungeons-dragons-honor-among-thieves',
       minutes: 134,
     });

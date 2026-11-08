@@ -1,7 +1,7 @@
 import { decodeEntities } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { osloDateTime, programSlot } from '../time.ts';
+import { venueProgram, type Program, type Source } from '../program.ts';
+import { osloDateTime } from '../time.ts';
 
 // Oslo Filmrullklubb: analog screenings in Laben at Kulturhuset, about once a month. Each screening is a post on the
 // club's WordPress site, and the feed holds the latest ten.
@@ -75,42 +75,16 @@ export function parsePost(post: FilmrullPost): { title: string; year: number; st
   return { title: m[1], year: Number(m[2]), start: `${year}-${mm}-${day}T${time}:00`, synopsis: text[0] ?? '' };
 }
 
+/** The club's screenings in Laben, one room, with tickets at the door. The posts have no posters. */
 export function filmrullProgram(posts: FilmrullPost[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const post of posts) {
-    const screening = parsePost(post);
-    if (!screening) continue;
-    const filmId = `OSLOFILMRULLKLUBB:${slugify(screening.title)}`;
-    films[filmId] ??= {
-      title: screening.title,
-      originalTitle: null,
-      year: screening.year,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `oslo-filmrullklubb-${slugify(screening.title)}`,
-      minutes: null,
-      ageRating: null,
-      synopsis: screening.synopsis || null,
-      // The posts have no posters, so the film gets TMDB's or none
-      posterUrl: null,
-      pageUrl: post.link,
-      source: CINEMA,
-    };
-    const slot = programSlot(screening.start);
-    (days[slot.day] ??= []).push({
-      key: post.link,
-      filmId,
-      cinema: CINEMA,
-      // One room, Laben
-      screen: '',
-      ...slot,
-      // Tickets are sold at the door
-      bookingUrl: post.link,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    CINEMA,
+    CINEMA,
+    posts.flatMap((post) => {
+      const screening = parsePost(post);
+      return screening ? [{ ...screening, key: post.link, pageUrl: post.link }] : [];
+    }),
+  );
 }
 
 export const osloFilmrullklubb: Source = {

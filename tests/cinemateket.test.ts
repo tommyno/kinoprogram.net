@@ -61,9 +61,9 @@ describe('parseFeed', () => {
 describe('cinemateketProgram', () => {
   const program = cinemateketProgram(parseFeed(FEED));
 
-  it('makes one film per film page, linking times to it', () => {
+  it('makes one film per title, linking times to its page', () => {
     expect(program.films).toEqual({
-      'CINEMATEKET:the-arbor': {
+      'cinemateket-the-arbor': {
         title: 'The Arbor',
         originalTitle: null,
         year: null,
@@ -122,7 +122,7 @@ describe('mergePrograms', () => {
       },
     };
     const merged = mergePrograms([filmweb, cinemateketProgram(parseFeed(FEED))]);
-    expect(Object.keys(merged.films)).toEqual(['EDI1', 'CINEMATEKET:the-arbor']);
+    expect(Object.keys(merged.films)).toEqual(['EDI1', 'cinemateket-the-arbor']);
     expect(merged.days['2026-10-29'].map((s) => s.cinema)).toEqual(['Cinemateket', 'Saga']);
     expect(Object.keys(merged.days)).toEqual(['2026-10-29', '2027-06-02']);
   });

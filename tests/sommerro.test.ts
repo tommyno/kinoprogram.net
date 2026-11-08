@@ -60,7 +60,7 @@ describe('parsePage', () => {
 describe('sommerroProgram', () => {
   it('makes a film per title, with times linking to the series page', () => {
     const program = sommerroProgram(parsePage(page(block('Serpico (1973)', '4. November kl 18:00')), '2026-11-02'));
-    expect(program.films['SOMMERRO:serpico']).toMatchObject({ title: 'Serpico', year: 1973, slug: 'sommerro-serpico' });
+    expect(program.films['sommerro-serpico']).toMatchObject({ title: 'Serpico', year: 1973, slug: 'sommerro-serpico' });
     expect(program.days['2026-11-04'][0]).toMatchObject({
       cinema: CINEMA,
       time: '18:00',

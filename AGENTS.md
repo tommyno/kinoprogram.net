@@ -11,7 +11,8 @@ the browser scripts only update times, labels and toggles. See README.md for the
 ## Layout
 
 - `src/lib/sources/`: one file per source, each exporting a `Source` and listed in `index.ts`, with a test against
-  the saved response in `tests/fixtures/` (`pnpm fixture` refreshes them)
+  the saved response in `tests/fixtures/` (`pnpm fixture` refreshes them). A source for one venue reads its data
+  into screenings and hands them to `venueProgram`
 - `src/lib/`: the program model (`program.ts`), fetching (`source.ts`, `http.ts`), dates (`time.ts`), labels and
   lists for the pages (`display.ts`) and the page scripts' shared code (`browser.ts`)
 - `src/components/`: one folder per component, with its CSS module

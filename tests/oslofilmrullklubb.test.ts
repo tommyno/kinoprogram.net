@@ -70,7 +70,7 @@ describe('parsePost', () => {
 describe('filmrullProgram', () => {
   it('makes a film per title, with times linking to the post', () => {
     const program = filmrullProgram([post({})]);
-    expect(program.films['OSLOFILMRULLKLUBB:the-executioner-s-song']).toMatchObject({
+    expect(program.films['oslo-filmrullklubb-the-executioner-s-song']).toMatchObject({
       title: 'The Executioner’s Song',
       year: 1982,
       slug: 'oslo-filmrullklubb-the-executioner-s-song',

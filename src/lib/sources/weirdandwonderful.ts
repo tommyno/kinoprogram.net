@@ -1,8 +1,7 @@
 import { z } from 'zod';
 import { htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
-import { programSlot } from '../time.ts';
+import { venueProgram, type Program, type Source } from '../program.ts';
 
 // Weird and Wonderful Cinema: a film club at Kruttverket on Kroloftet, about every other week. Its program is on Fienta,
 // one event per screening, and Fienta's public API lists the organizer's upcoming events.
@@ -41,41 +40,22 @@ export function descriptionText(html: string): string {
     .join('\n');
 }
 
+/** The club's screenings, in one room. The events' images are banners of unknown size, so a film gets TMDB's poster. */
 export function weirdAndWonderfulProgram(events: RawEvent[]): Program {
-  const films: Record<string, Film> = {};
-  const days: Record<string, Showing[]> = {};
-
-  for (const event of events) {
-    if (event.event_status !== 'scheduled' || event.attendance_mode === 'online') continue;
-    const { title, year } = parseTitle(event.title);
-    const filmId = `WEIRDANDWONDERFUL:${slugify(title)}`;
-    films[filmId] ??= {
-      title,
-      originalTitle: null,
-      year,
-      // Like Cinemateket's, so a film Filmweb also lists keeps its own page
-      slug: `weird-and-wonderful-cinema-${slugify(title)}`,
-      minutes: null,
-      ageRating: null,
-      synopsis: descriptionText(event.description ?? '') || null,
-      // The events' images are banners of unknown size, so the film gets TMDB's poster or none
-      posterUrl: null,
-      pageUrl: event.url,
-      source: CINEMA,
-    };
-    const slot = programSlot(event.starts_at.replace(' ', 'T'));
-    (days[slot.day] ??= []).push({
-      key: String(event.id),
-      filmId,
-      cinema: CINEMA,
-      // One room
-      screen: '',
-      ...slot,
-      bookingUrl: event.buy_tickets_url || event.url,
-    });
-  }
-
-  return { films, days };
+  return venueProgram(
+    CINEMA,
+    CINEMA,
+    events
+      .filter((event) => event.event_status === 'scheduled' && event.attendance_mode !== 'online')
+      .map((event) => ({
+        ...parseTitle(event.title),
+        key: String(event.id),
+        synopsis: descriptionText(event.description ?? ''),
+        start: event.starts_at.replace(' ', 'T'),
+        pageUrl: event.url,
+        bookingUrl: event.buy_tickets_url || event.url,
+      })),
+  );
 }
 
 const Response = z.object({ events: z.array(RawEvent) });

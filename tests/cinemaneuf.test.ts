@@ -49,7 +49,7 @@ describe('cinemaNeufProgram', () => {
 
   it('makes one film per title, linking times to the program page', () => {
     expect(program.films).toEqual({
-      'CINEMANEUF:love-is-the-devil': {
+      'cinema-neuf-love-is-the-devil': {
         title: 'Love is the Devil',
         originalTitle: null,
         year: 1998,

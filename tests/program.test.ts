@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { FilmwebSnapshot, filmwebProgram, shortScreen, type RawShow } from '../src/lib/sources/filmweb.ts';
-import { assertPlausible, mergePrograms, showingDays, slugify, upcomingFilms } from '../src/lib/program.ts';
+import {
+  assertPlausible,
+  mergePrograms,
+  showingDays,
+  slugify,
+  upcomingFilms,
+  venueProgram,
+} from '../src/lib/program.ts';
 import { programNow } from '../src/lib/time.ts';
 
 const fixture = FilmwebSnapshot.parse(JSON.parse(readFileSync('tests/fixtures/filmweb-oslo.json', 'utf8')));
@@ -297,5 +304,32 @@ describe('the Filmweb fixture', () => {
 describe('assertPlausible', () => {
   it('rejects an empty program', () => {
     expect(() => assertPlausible({ films: {}, days: {} }, fixtureDay)).toThrow(/no showings/);
+  });
+});
+
+describe('venueProgram', () => {
+  const screening = { title: 'Persona', start: '2026-11-06T18:00:00', pageUrl: 'https://example.test/persona' };
+  const program = venueProgram('Filmklubben', 'Lillesalen', [
+    { ...screening, key: '1', year: 1966 },
+    { ...screening, key: '2', start: '2026-11-07T20:30:00', bookingUrl: 'https://example.test/billett' },
+  ]);
+
+  it('makes one film per title, named after the source, from its first screening', () => {
+    expect(Object.keys(program.films)).toEqual(['filmklubben-persona']);
+    expect(program.films['filmklubben-persona']).toMatchObject({
+      slug: 'filmklubben-persona',
+      year: 1966,
+      source: 'Filmklubben',
+    });
+  });
+
+  it('puts each screening on its day at the venue, booked on the page unless it says otherwise', () => {
+    expect(program.days['2026-11-06'][0]).toMatchObject({
+      cinema: 'Lillesalen',
+      time: '18:00',
+      screen: '',
+      bookingUrl: screening.pageUrl,
+    });
+    expect(program.days['2026-11-07'][0]).toMatchObject({ time: '20:30', bookingUrl: 'https://example.test/billett' });
   });
 });

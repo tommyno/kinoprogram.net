@@ -45,7 +45,7 @@ describe('descriptionText', () => {
 describe('weirdAndWonderfulProgram', () => {
   it('makes a film per title, with times linking to the tickets', () => {
     const program = weirdAndWonderfulProgram([event({})]);
-    expect(program.films['WEIRDANDWONDERFUL:birth']).toMatchObject({
+    expect(program.films['weird-and-wonderful-cinema-birth']).toMatchObject({
       title: 'Birth',
       year: 2004,
       slug: 'weird-and-wonderful-cinema-birth',
