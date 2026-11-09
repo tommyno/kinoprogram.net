@@ -6,7 +6,8 @@ the browser scripts only update times, labels and toggles. See README.md for the
 ## Commands
 
 - `pnpm dev`: the dev server on port 3000 (`astro dev --background` to run it in the background)
-- `pnpm test`, `pnpm check`, `pnpm format`: tests, type check and Prettier, all run by CI
+- `pnpm test`, `pnpm check`, `pnpm format`: tests, type check and Prettier. `pnpm build` runs the tests first, so a
+  failing test stops the Vercel deploy
 
 ## Layout
 
