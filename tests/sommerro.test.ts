@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
 import { CINEMA, parseDate, parsePage, sommerroProgram } from '../src/lib/sources/sommerro.ts';
 
 function block(name: string, date: string): string {

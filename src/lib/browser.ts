@@ -6,7 +6,9 @@ export function markPast(links: HTMLElement[]): void {
   const now = programNow();
   for (const link of links) {
     const past = isPast({ day: link.dataset.day!, minutes: Number(link.dataset.minutes) }, now);
-    const label = (link.dataset.label ??= link.getAttribute('aria-label')!);
+    // The label without "(startet)", kept from the first time
+    link.dataset.label ??= link.getAttribute('aria-label')!;
+    const label = link.dataset.label;
     link.toggleAttribute('data-past', past);
     link.setAttribute('aria-label', past ? `${label} (startet)` : label);
   }

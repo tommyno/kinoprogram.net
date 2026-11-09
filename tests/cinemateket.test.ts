@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { CINEMA, cinemateketProgram, parseFeed } from '../src/lib/sources/cinemateket.ts';
+import { describe, expect, it } from 'vitest';
 import { mergePrograms, type Program } from '../src/lib/program.ts';
+import { CINEMA, cinemateketProgram, parseFeed } from '../src/lib/sources/cinemateket.ts';
 
 const FEED = [
   'BEGIN:VCALENDAR',

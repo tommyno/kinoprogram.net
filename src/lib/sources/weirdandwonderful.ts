@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, venueProgram } from '../program.ts';
 
 // Weird and Wonderful Cinema: a film club at Kruttverket on Kroloftet, about every other week. Its program is on Fienta,
 // one event per screening, and Fienta's public API lists the organizer's upcoming events.

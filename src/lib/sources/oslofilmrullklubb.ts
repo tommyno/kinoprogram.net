@@ -1,6 +1,6 @@
 import { decodeEntities } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, venueProgram } from '../program.ts';
 import { osloDateTime } from '../time.ts';
 
 // Oslo Filmrullklubb: analog screenings in Laben at Kulturhuset, about once a month. Each screening is a post on the

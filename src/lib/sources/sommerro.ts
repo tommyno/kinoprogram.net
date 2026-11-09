@@ -1,6 +1,6 @@
 import { htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { splitYear, venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, splitYear, venueProgram } from '../program.ts';
 import { addDays, monthNumber, programNow } from '../time.ts';
 
 // Sommerro: film evenings in the hotel's film room, each sold as a prepaid package with dinner, brunch or afternoon tea

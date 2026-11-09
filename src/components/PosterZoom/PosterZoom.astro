@@ -1,8 +1,9 @@
 ---
 // The film page's poster. When there is a larger copy, a click opens it (data-expanded) and closes it again; the parent
 // lays out both states
-import type { Film } from '@lib/program.ts';
+
 import Poster from '@components/Poster/Poster.astro';
+import type { Film } from '@lib/program.ts';
 import styles from './PosterZoom.module.css';
 
 type Props = {

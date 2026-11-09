@@ -1,10 +1,10 @@
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { errorMessage } from './http.ts';
-import { assertPlausible, mergePrograms, type Film, type Program, type Source } from './program.ts';
-import { SOURCES } from './sources/index.ts';
 import { localizePosters } from './posters.ts';
+import { assertPlausible, type Film, mergePrograms, type Program, type Source } from './program.ts';
 import { notifySlack } from './slack.ts';
+import { SOURCES } from './sources/index.ts';
 import { programNow } from './time.ts';
 import { fetchTmdb, type TmdbCache, type TmdbFilm } from './tmdb.ts';
 

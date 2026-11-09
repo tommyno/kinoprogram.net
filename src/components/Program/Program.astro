@@ -1,10 +1,10 @@
 ---
-import type { Film, Showing } from '@lib/program.ts';
 import CinemaColumns from '@components/CinemaColumns/CinemaColumns.astro';
 import FilmGrid from '@components/FilmGrid/FilmGrid.astro';
 import PosterSwitch from '@components/PosterSwitch/PosterSwitch.astro';
 import TimeList from '@components/TimeList/TimeList.astro';
 import ViewTabs from '@components/ViewTabs/ViewTabs.astro';
+import type { Film, Showing } from '@lib/program.ts';
 import styles from './Program.module.css';
 
 type Props = {
@@ -41,8 +41,8 @@ const { films, showings, later } = Astro.props;
 </div>
 
 <script>
-  import { COLLAPSED_COUNT, moreLabel } from '@lib/display.ts';
   import { markPast } from '@lib/browser.ts';
+  import { COLLAPSED_COUNT, moreLabel } from '@lib/display.ts';
 
   const root = document.querySelector<HTMLElement>('[data-program]')!;
   const links = [...root.querySelectorAll<HTMLElement>('[data-minutes]')];

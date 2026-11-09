@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
 import {
   CINEMA,
   deichman,
   deichmanProgram,
   filmTitle,
-  shortScreen,
   type RawEvent,
+  shortScreen,
 } from '../src/lib/sources/deichman.ts';
 
 function event(overrides: Partial<RawEvent> & { label?: string; location?: string }): RawEvent {

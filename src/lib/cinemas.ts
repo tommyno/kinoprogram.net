@@ -1,4 +1,4 @@
-import { collator, slugify, type Program } from './program.ts';
+import { collator, type Program, slugify } from './program.ts';
 import { CINEMA as CINEMA_NEUF } from './sources/cinemaneuf.ts';
 import { CINEMA as CINEMATEKET } from './sources/cinemateket.ts';
 import { CINEMA as DEICHMAN } from './sources/deichman.ts';

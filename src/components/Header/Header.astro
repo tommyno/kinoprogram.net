@@ -37,6 +37,7 @@ const { picker } = Astro.props;
           </svg>
         </button>
         {/* Laid over the button for pointers; keyboards use the button, as the input's own fields would change the date on every arrow key */}
+        {/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: the button above is the one for keyboards and screen readers */}
         <input
           class={styles.input}
           type="date"

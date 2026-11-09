@@ -104,6 +104,6 @@ const { onSearch = false } = Astro.props;
 
     // Tab widths change with the viewport and once the font loads
     const resizeObserver = new ResizeObserver(placeIndicator);
-    tabs.forEach((tab) => resizeObserver.observe(tab));
+    for (const tab of tabs) resizeObserver.observe(tab);
   }
 </script>

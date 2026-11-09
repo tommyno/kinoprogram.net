@@ -6,8 +6,13 @@ the browser scripts only update times, labels and toggles. See README.md for the
 ## Commands
 
 - `pnpm dev`: the dev server on port 3000 (`astro dev --background` to run it in the background)
-- `pnpm test`, `pnpm check`, `pnpm format`: tests, type check and Prettier. `pnpm build` runs the tests first, so a
-  failing test stops the Vercel deploy
+- `pnpm test`, `pnpm check`: tests and type check. `pnpm build` runs the tests first, so a failing test stops the
+  Vercel deploy
+- `pnpm format`: Biome formats, sorts imports and applies safe lint fixes; `pnpm lint` reports what is left
+
+## Before committing
+
+Run `pnpm format`, then `pnpm lint`, and commit only when both are clean. Nothing checks this later.
 
 ## Layout
 

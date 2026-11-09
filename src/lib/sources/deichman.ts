@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { fetchOk } from '../http.ts';
-import { venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, venueProgram } from '../program.ts';
 import { minutesBetween, osloDateTime } from '../time.ts';
 
 // The library's ticket shop (Hoopla) lists everything Deichman Bjørvika holds. One call returns every upcoming event.

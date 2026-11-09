@@ -1,6 +1,6 @@
 import { decodeEntities, htmlText } from '../html.ts';
 import { fetchOk } from '../http.ts';
-import { splitYear, venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, splitYear, venueProgram } from '../program.ts';
 import { monthNumber } from '../time.ts';
 
 // OsloMet Filmklubb: the student film club's screenings in Lille Auditorium at P32. Its RSS feed lists the upcoming

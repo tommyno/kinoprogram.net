@@ -1,9 +1,9 @@
 ---
-import { COLLAPSED_COUNT, filmMeta } from '@lib/display.ts';
-import { collator, filmPath, type Film, type Showing } from '@lib/program.ts';
 import MoreButton from '@components/MoreButton/MoreButton.astro';
 import Poster from '@components/Poster/Poster.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
+import { COLLAPSED_COUNT, filmMeta } from '@lib/display.ts';
+import { collator, type Film, filmPath, type Showing } from '@lib/program.ts';
 import styles from './FilmGrid.module.css';
 
 type Props = {
@@ -23,6 +23,7 @@ const groups = [...Map.groupBy(showings, (s) => s.filmId)].sort(([a], [b]) =>
     const meta = filmMeta(film);
     return (
       <article class={styles.card} data-card data-stagger style={`--i: ${index}`}>
+        {/* biome-ignore lint/a11y/noAriaHiddenOnFocusable lint/a11y/useAnchorContent: the title's link again, for the mouse only */}
         <a href={filmPath(film)} title="Se alle visninger" tabindex="-1" aria-hidden="true">
           <Poster film={film} eager={index < 4} />
         </a>

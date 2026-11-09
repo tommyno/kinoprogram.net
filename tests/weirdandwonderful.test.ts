@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
 import {
   CINEMA,
   descriptionText,
   parseTitle,
+  type RawEvent,
   weirdAndWonderful,
   weirdAndWonderfulProgram,
-  type RawEvent,
 } from '../src/lib/sources/weirdandwonderful.ts';
 
 const URL = 'https://fienta.com/birth140528-198328';

@@ -1,7 +1,7 @@
 ---
-import { filmMeta } from '@lib/display.ts';
-import { filmPath, type Film } from '@lib/program.ts';
 import Poster from '@components/Poster/Poster.astro';
+import { filmMeta } from '@lib/display.ts';
+import { type Film, filmPath } from '@lib/program.ts';
 import styles from './FilmSearch.module.css';
 
 type Props = {
@@ -54,9 +54,7 @@ const { films } = Astro.props;
         </svg>
       </button>
     </div>
-    <p class={styles.count} role="status" data-search-count>
-      {films.length} filmer
-    </p>
+    <p class={styles.count} role="status" data-search-count>{films.length} filmer</p>
   </div>
 
   <p class={styles.empty} role="status" hidden data-search-empty></p>

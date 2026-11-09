@@ -1,5 +1,4 @@
 ---
-import Base from '@layouts/Base.astro';
 import BackLink from '@components/BackLink/BackLink.astro';
 import DayLabel from '@components/DayLabel/DayLabel.astro';
 import ExternalLink from '@components/ExternalLink/ExternalLink.astro';
@@ -8,8 +7,9 @@ import PosterZoom from '@components/PosterZoom/PosterZoom.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
 import Synopsis from '@components/Synopsis/Synopsis.astro';
 import TrailerButton from '@components/TrailerButton/TrailerButton.astro';
+import Base from '@layouts/Base.astro';
 import { filmMeta, listParts } from '@lib/display.ts';
-import { showingAnchor, showingDays, type Person } from '@lib/program.ts';
+import { type Person, showingAnchor, showingDays } from '@lib/program.ts';
 import { getProgram } from '@lib/source.ts';
 import { programNow } from '@lib/time.ts';
 import styles from './FilmPage.module.css';

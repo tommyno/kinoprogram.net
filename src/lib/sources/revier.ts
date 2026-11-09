@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { fetchOk } from '../http.ts';
-import { venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, venueProgram } from '../program.ts';
 
 // Revier Film Club: free screenings at the Revier hotel, Kongens gate 5. Its program is only on Eventbrite, one event per
 // screening, and the organizer page holds the upcoming events as JSON.

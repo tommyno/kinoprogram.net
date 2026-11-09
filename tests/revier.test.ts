@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { CINEMA, parseName, revier, revierProgram, upcomingEvents, type RawEvent } from '../src/lib/sources/revier.ts';
+import { describe, expect, it } from 'vitest';
+import { CINEMA, parseName, type RawEvent, revier, revierProgram, upcomingEvents } from '../src/lib/sources/revier.ts';
 
 function event(overrides: Partial<RawEvent>): RawEvent {
   return {

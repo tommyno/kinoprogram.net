@@ -1,10 +1,11 @@
 ---
 // One column in ShowingColumns: a heading over its showings, each linking to its film's page
-import { COLLAPSED_COUNT } from '@lib/display.ts';
-import { showingPath, type Film, type Showing } from '@lib/program.ts';
+
 import MoreButton from '@components/MoreButton/MoreButton.astro';
 import Poster from '@components/Poster/Poster.astro';
 import ShowingLink from '@components/ShowingLink/ShowingLink.astro';
+import { COLLAPSED_COUNT } from '@lib/display.ts';
+import { type Film, type Showing, showingPath } from '@lib/program.ts';
 import styles from './ShowingColumn.module.css';
 
 type Props = {
@@ -28,6 +29,7 @@ const { films, showings, index, collapsed = false, day } = Astro.props;
   data-stagger
   style={`--i: ${index}`}
 >
+  {/* biome-ignore lint/a11y/useHeadingContent: the text comes in the slot */}
   <h2 class={styles.heading}>
     <slot name="heading" />
   </h2>

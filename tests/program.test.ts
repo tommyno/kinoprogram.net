@@ -1,6 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { FilmwebSnapshot, filmwebProgram, shortScreen, type RawShow } from '../src/lib/sources/filmweb.ts';
+import { describe, expect, it } from 'vitest';
 import {
   assertPlausible,
   mergePrograms,
@@ -9,6 +8,7 @@ import {
   upcomingFilms,
   venueProgram,
 } from '../src/lib/program.ts';
+import { FilmwebSnapshot, filmwebProgram, type RawShow, shortScreen } from '../src/lib/sources/filmweb.ts';
 import { programNow } from '../src/lib/time.ts';
 
 const fixture = FilmwebSnapshot.parse(JSON.parse(readFileSync('tests/fixtures/filmweb-oslo.json', 'utf8')));

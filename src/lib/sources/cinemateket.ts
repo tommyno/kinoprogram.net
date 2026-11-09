@@ -1,5 +1,5 @@
 import { fetchOk } from '../http.ts';
-import { venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, venueProgram } from '../program.ts';
 import { minutesBetween, osloDateTime } from '../time.ts';
 
 // Cinemateket isn't in Filmweb. Its calendar feed holds the next 100 screenings (about three weeks).

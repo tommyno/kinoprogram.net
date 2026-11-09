@@ -1,7 +1,7 @@
 ---
-import Base from '@layouts/Base.astro';
 import Footer from '@components/Footer/Footer.astro';
 import headerStyles from '@components/Header/Header.module.css';
+import Base from '@layouts/Base.astro';
 import styles from './NotFoundPage.module.css';
 ---
 
@@ -14,12 +14,8 @@ import styles from './NotFoundPage.module.css';
     <h1 class={styles.title}>Fant ikke siden</h1>
     <p class={styles.text}>Datoen eller filmens siste visning kan ha passert, eller lenken er feil.</p>
     <div class={styles.actions}>
-      <a href="/" class={styles.primary}>
-        Se dagens kinoprogram
-      </a>
-      <a href="/sok" class={styles.secondary}>
-        Søk etter film
-      </a>
+      <a href="/" class={styles.primary}>Se dagens kinoprogram</a>
+      <a href="/sok" class={styles.secondary}>Søk etter film</a>
     </div>
   </section>
 

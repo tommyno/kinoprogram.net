@@ -6,9 +6,9 @@ import {
   lookupKey,
   pickCredits,
   pickTrailer,
+  type SearchResult,
   searchTitles,
   tmdbPoster,
-  type SearchResult,
   type Video,
 } from '../src/lib/tmdb.ts';
 

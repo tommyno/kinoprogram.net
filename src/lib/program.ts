@@ -137,7 +137,8 @@ export function venueProgram(source: string, cinema: string, screenings: Screeni
       source,
     };
     const slot = programSlot(screening.start);
-    (days[slot.day] ??= []).push({
+    days[slot.day] ??= [];
+    days[slot.day].push({
       key: screening.key,
       filmId,
       cinema,
@@ -201,7 +202,10 @@ export function mergePrograms(programs: Program[]): Program {
   }
   const all: Record<string, Showing[]> = {};
   for (const program of programs) {
-    for (const [day, list] of Object.entries(program.days)) (all[day] ??= []).push(...list);
+    for (const [day, list] of Object.entries(program.days)) {
+      all[day] ??= [];
+      all[day].push(...list);
+    }
   }
 
   const days: Record<string, Showing[]> = {};

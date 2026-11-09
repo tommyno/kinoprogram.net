@@ -6,7 +6,7 @@ on:
   schedule:
     # Every four hours at an off-peak minute (UTC). The pages move "i dag" to the new date
     # in the browser at midnight, so a build only brings in new showings
-    - cron: '37 */4 * * *'
+    - cron: "37 */4 * * *"
   workflow_dispatch:
 
 permissions: {}

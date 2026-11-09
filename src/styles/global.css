@@ -80,6 +80,7 @@ button {
 
 /* Components set their own display, which would otherwise win over the hidden attribute */
 [hidden] {
+  /* biome-ignore lint/complexity/noImportantStyles: it has to win over every component's display */
   display: none !important;
 }
 

@@ -9,6 +9,7 @@ type Props = {
 const { href } = Astro.props;
 ---
 
+{/* biome-ignore lint/a11y/useAnchorContent: the text comes in the slot */}
 <a {href} class={styles.link} target="_blank" rel="noreferrer">
   <slot />
   <svg

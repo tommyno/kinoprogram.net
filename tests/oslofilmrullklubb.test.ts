@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
 import {
   CINEMA,
+  type FilmrullPost,
   filmrullProgram,
   osloFilmrullklubb,
   parseFeed,
   parsePost,
-  type FilmrullPost,
 } from '../src/lib/sources/oslofilmrullklubb.ts';
 
 const LINK = 'https://www.oslofilmrullklubb.no/2026/10/31/the-executioners-song-1982-tirsdag-10-november/';

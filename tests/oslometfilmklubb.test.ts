@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
 import { CINEMA, osloMetProgram, parsePage } from '../src/lib/sources/oslometfilmklubb.ts';
 
 const URL = 'https://oslometfilmklubb.no/visninger/2026-11-06-dungeons_and_dragons_2023/';

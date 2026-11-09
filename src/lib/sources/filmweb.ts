@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { fetchOk } from '../http.ts';
-import { slugify, type Film, type Program, type Showing, type Source } from '../program.ts';
+import { type Film, type Program, type Showing, type Source, slugify } from '../program.ts';
 import { programSlot } from '../time.ts';
 
 // Filmweb's public site backend (undocumented). One call returns every show in a city.
@@ -171,7 +171,8 @@ export function filmwebProgram(snapshot: FilmwebSnapshot): Program {
     };
 
     const slot = programSlot(show.showStart);
-    (days[slot.day] ??= []).push({
+    days[slot.day] ??= [];
+    days[slot.day].push({
       key,
       filmId,
       cinema: show.theaterName,

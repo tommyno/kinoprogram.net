@@ -1,9 +1,9 @@
 ---
+import ShowingColumn from '@components/ShowingColumn/ShowingColumn.astro';
+import ShowingColumns from '@components/ShowingColumns/ShowingColumns.astro';
 import { cinemaPath } from '@lib/cinemas.ts';
 import { collator, type Film, type Showing } from '@lib/program.ts';
 import { formatShortDay } from '@lib/time.ts';
-import ShowingColumn from '@components/ShowingColumn/ShowingColumn.astro';
-import ShowingColumns from '@components/ShowingColumns/ShowingColumns.astro';
 import styles from './CinemaColumns.module.css';
 
 type Props = {

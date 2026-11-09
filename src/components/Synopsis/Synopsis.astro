@@ -21,7 +21,7 @@ const { text } = Astro.props;
     const wide = matchMedia('(min-width: 700px)');
     let expanded = false;
 
-    const fit = () => {
+    const fitToPoster = () => {
       synopsis.style.maxHeight = '';
       const lineHeight = parseFloat(getComputedStyle(synopsis).lineHeight);
       const overflow = wide.matches
@@ -48,7 +48,7 @@ const { text } = Astro.props;
     const toggle = () => {
       if (!synopsis.hasAttribute('role')) return;
       expanded = !expanded;
-      fit();
+      fitToPoster();
     };
 
     synopsis.addEventListener('click', toggle);
@@ -59,7 +59,7 @@ const { text } = Astro.props;
     });
 
     // Line breaks change with the viewport and once the font loads
-    new ResizeObserver(fit).observe(heading.parentElement!);
-    document.fonts.ready.then(fit);
+    new ResizeObserver(fitToPoster).observe(heading.parentElement!);
+    document.fonts.ready.then(fitToPoster);
   }
 </script>

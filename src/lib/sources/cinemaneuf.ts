@@ -1,5 +1,5 @@
 import { fetchOk } from '../http.ts';
-import { venueProgram, type Program, type Source } from '../program.ts';
+import { type Program, type Source, venueProgram } from '../program.ts';
 import { programNow } from '../time.ts';
 
 // The student film club at Chateau Neuf. Its site reads the semester's program from a spreadsheet, one row per screening.

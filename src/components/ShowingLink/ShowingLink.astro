@@ -21,6 +21,7 @@ const label = [text.filter(Boolean).join(' '), context].filter(Boolean).join(', 
 const toTickets = !href;
 ---
 
+{/* biome-ignore lint/a11y/useAnchorContent: the text comes in the slot */}
 <a
   href={href ?? showing.bookingUrl}
   title={toTickets ? 'Kjøp billett' : 'Se alle visninger'}
