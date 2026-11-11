@@ -114,11 +114,6 @@ if (film.cast?.length) credits.push(['Med', film.cast]);
 
   const links = keepDaysCurrent();
 
-  // Coming from a time in the program (see showingPath), mark that showing and scroll only as far as needed to show it
-  const chosen = links.find((link) => link.dataset.showing === location.hash.slice(1));
-  if (chosen) {
-    chosen.toggleAttribute('data-chosen', true);
-    // Instant, as the page should open there rather than glide there (html scrolls smoothly)
-    chosen.scrollIntoView({ block: 'nearest', behavior: 'instant' });
-  }
+  // Coming from a time in the program (see showingPath), mark that showing
+  links.find((link) => link.dataset.showing === location.hash.slice(1))?.toggleAttribute('data-chosen', true);
 </script>

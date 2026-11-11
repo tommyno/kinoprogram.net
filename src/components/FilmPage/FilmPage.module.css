@@ -190,8 +190,6 @@
 
 /* The showing picked in the program */
 .row[data-chosen] {
-  /* Some air below it when the page scrolls it into view */
-  scroll-margin-bottom: 24px;
   border-color: var(--ink);
   background: var(--ink);
   color: var(--bg);
